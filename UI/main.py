@@ -6,8 +6,9 @@ import PyQt5
 from PyQt5 import QtCore
 from PyQt5.QtCore import QCoreApplication, QUrl
 from PyQt5.QtWebEngineWidgets import QWebEngineView
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QMessageBox, QWidget
 from PyQt5.uic import loadUiType
+from ipywidgets.widgets import widget
 
 Ui_MainWindow = loadUiType("main.ui")[0]
 
@@ -58,10 +59,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         layout = QVBoxLayout()
         self.setLayout(layout)
         self.gridLayout_2.addWidget(self.browser)
+        # 启动寻源
+        self.start.clicked.connect(self.appenText)
+        # 停止寻源
+        self.start.clicked.connect(self.appenText2)
+
+        self.upbtn.shortcut
+    # 状态信息显示
+    def appenText(self):
+        self.textBrowser.append("自动寻源已启动")
+
+    def appenText2(self):
+        self.textBrowser.append("自动寻源已启动")
 
 
-
-
+    # def showMsg():
+    #     QMessageBox.information(self.widget, '信息提示框', 'cdse')
 
 
 if __name__ == '__main__':
