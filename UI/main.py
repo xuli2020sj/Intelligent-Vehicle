@@ -18,7 +18,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.resize(800, 600)
 
-        self.browser=QWebEngineView()
+        self.browser = QWebEngineView()
         self.browser.setHtml('''<!doctype html>
         <html>
         <head>
@@ -59,10 +59,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setLayout(layout)
         self.gridLayout_2.addWidget(self.browser)
 
-    def loadPage(self):
-        with open('gdmap.html', 'r', encoding="utf-8") as f:
-            html = f.read()
-            self.browser.setHtml(html)
+
+
+
 
 
 if __name__ == '__main__':
