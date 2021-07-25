@@ -164,6 +164,8 @@ def back():
     GPIO.output(IN4, GPIO.HIGH)
     pwm_ENA.ChangeDutyCycle(CarSpeedControl)
     pwm_ENB.ChangeDutyCycle(CarSpeedControl)
+    time.sleep(1)
+    brake()
 
 
 # 小车左转
@@ -213,6 +215,12 @@ def brake():
     GPIO.output(IN3, GPIO.LOW)
     GPIO.output(IN4, GPIO.LOW)
 
+#
+def whistle():
+    GPIO.output(buzzer, GPIO.LOW)
+    time.sleep(0.1)
+    GPIO.output(buzzer, GPIO.HIGH)
+    time.sleep(0.001)
 
 ################################################################ 需要为客户端提供服务
 def do_service(connect_socket):
@@ -225,17 +233,16 @@ def do_service(connect_socket):
             # wiringpi.digitalWrite(0,0)
             print('client %s close' % str(connect_socket.getpeername()))
             break
-        if ((len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'w')):
-            print('youle')
-            # wiringpi.digitalWrite(0,1)
+        if (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'w'):
             run()
-        elif ((len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 's')):
+        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 's'):
+            whistle()
             back()
-        elif ((len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'a')):
+        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'a'):
             left()
-        elif ((len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'd')):
+        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'd'):
             right()
-        elif ((len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'x')):
+        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'x'):
             brake()
         # else:
         # wiringpi.digitalWrite(0,0)
@@ -258,7 +265,7 @@ def main():
     listen_socket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 
     # 2.绑定端口
-    my_addr = ('192.168.3.31', 8888)
+    my_addr = ('192.168.3.24', 8888)
     listen_socket.bind(my_addr)
 
     # 3，接听状态
@@ -281,6 +288,7 @@ def main():
 
         # 父进程，关闭connect_socket
         connect_socket.close()
+
 
 
 if __name__ == "__main__":
