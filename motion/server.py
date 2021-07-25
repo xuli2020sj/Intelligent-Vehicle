@@ -132,7 +132,7 @@ GPIO.setwarnings(False)
 
 
 # 电机引脚初始化操作
-def motor_init():
+def init():
     global pwm_ENA
     global pwm_ENB
     GPIO.setup(ENA, GPIO.OUT, initial=GPIO.HIGH)
