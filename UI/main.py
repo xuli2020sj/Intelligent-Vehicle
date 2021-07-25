@@ -9,6 +9,7 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QMessageBox, QWidget
 from PyQt5.uic import loadUiType
 from ipywidgets.widgets import widget
+import motion
 
 Ui_MainWindow = loadUiType("main.ui")[0]
 
@@ -32,7 +33,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
-        self.resize(1200, 900)
+        self.resize(950, 650)
 
         self.browser = QWebEngineView()
         self.browser.setHtml('''<!doctype html>
@@ -73,30 +74,49 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # 启动寻源
         self.start.clicked.connect(self.appendText)
         # 停止寻源
-        self.stop.clicked.connect(self.appendText2)
+        self.stop.clicked.connect(self.stopText)
         # 车辆返航
-        self.return_to_base.clicked(self.appendText3)
+#        self.return_to_base.clicked(self.appendText3)
         # 绑定快捷键
         self.upbtn.setShortcut('w')
+        self.upbtn.released.connect(self.forwardText)
         self.downbtn.setShortcut('s')
+        self.downbtn.clicked.connect(self.backText)
         self.rightbtn.setShortcut('d')
+        self.rightbtn.clicked.connect(self.rightText)
         self.leftbtn.setShortcut('a')
+        self.leftbtn.clicked.connect(self.leftText)
+        self.stop.setShortcut('x')
+        self.stop.pressed.connect(self.stopText)
 
     # 状态信息显示
     def appendText(self):
         self.textBrowser.append("自动寻源已启动")
 
-    def appendText2(self):
-        self.textBrowser.append("自动寻源已停止")
+    def stopText(self):
+        self.textBrowser.append("小车已停止")
 
     def appendText3(self):
-        self.textBrowser.append("车辆正在返航")
+        self.textBrowser.append("车辆正在返 航")
 
     def appenTextSpeed(self):
         self.textBrowser.append("")
 
     def signalCall1(self):
         print("signal1 emit")
+
+    # 状态信息显示
+    def forwardText(self):
+        self.textBrowser.append("小车前进")
+
+    def backText(self):
+        self.textBrowser.append("小车后退")
+
+    def rightText(self):
+        self.textBrowser.append("小车右转")
+
+    def leftText(self):
+        self.textBrowser.append("小车左转")
 
     # def showMsg():
     #     QMessageBox.information(self.widget, '信息提示框', 'cdse')
@@ -108,7 +128,7 @@ if __name__ == '__main__':
     mw = MainWindow()
 
     mw.show()
-
+    motion.client.main()
     # 自定义信号与槽
     send = MyTypeSignal()
     slot = MySlot()

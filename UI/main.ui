@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>992</width>
-    <height>689</height>
+    <width>941</width>
+    <height>642</height>
    </rect>
   </property>
   <property name="font">
@@ -121,10 +121,10 @@
    <widget class="QTextBrowser" name="textBrowser">
     <property name="geometry">
      <rect>
-      <x>780</x>
+      <x>730</x>
       <y>300</y>
-      <width>211</width>
-      <height>351</height>
+      <width>191</width>
+      <height>291</height>
      </rect>
     </property>
     <property name="html">
@@ -138,10 +138,10 @@ p, li { white-space: pre-wrap; }
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>470</x>
-      <y>440</y>
-      <width>301</width>
-      <height>147</height>
+      <x>510</x>
+      <y>450</y>
+      <width>211</width>
+      <height>141</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
@@ -150,7 +150,7 @@ p, li { white-space: pre-wrap; }
        <property name="font">
         <font>
          <family>Adobe 宋体 Std L</family>
-         <pointsize>22</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
@@ -234,7 +234,7 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="0">
+     <item row="1" column="0">
       <widget class="QOpenGLWidget" name="openGLWidget"/>
      </item>
     </layout>
@@ -252,7 +252,7 @@ p, li { white-space: pre-wrap; }
    <widget class="QWidget" name="gridLayoutWidget_3">
     <property name="geometry">
      <rect>
-      <x>780</x>
+      <x>730</x>
       <y>10</y>
       <width>191</width>
       <height>280</height>
@@ -302,9 +302,9 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>510</x>
-      <y>200</y>
-      <width>239</width>
-      <height>109</height>
+      <y>230</y>
+      <width>211</width>
+      <height>111</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_4">
@@ -317,18 +317,6 @@ p, li { white-space: pre-wrap; }
        </property>
        <property name="text">
         <string>UP</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QPushButton" name="leftbtn">
-       <property name="font">
-        <font>
-         <pointsize>16</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>LEFT</string>
        </property>
       </widget>
      </item>
@@ -356,6 +344,32 @@ p, li { white-space: pre-wrap; }
        </property>
       </widget>
      </item>
+     <item row="3" column="0">
+      <widget class="QPushButton" name="leftbtn">
+       <property name="font">
+        <font>
+         <pointsize>16</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>LEFT</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>SpinL</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QPushButton" name="pushButton_2">
+       <property name="text">
+        <string>SpinR</string>
+       </property>
+      </widget>
+     </item>
      <item row="1" column="0" colspan="3">
       <widget class="QLabel" name="label_9">
        <property name="text">
@@ -369,9 +383,9 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>510</x>
-      <y>300</y>
-      <width>239</width>
-      <height>109</height>
+      <y>338</y>
+      <width>211</width>
+      <height>111</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_5">
@@ -438,8 +452,8 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>992</width>
-     <height>22</height>
+     <width>941</width>
+     <height>18</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuconnect">

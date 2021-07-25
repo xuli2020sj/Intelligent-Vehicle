@@ -30,4 +30,5 @@ def main():
     client_socket.close()
  
 if __name__ == "__main__":
+    print("hi")
     main()
