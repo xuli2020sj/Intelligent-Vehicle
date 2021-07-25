@@ -4,7 +4,7 @@ import sys
 import cv2
 import PyQt5
 from PyQt5 import QtCore
-from PyQt5.QtCore import QCoreApplication, QUrl
+from PyQt5.QtCore import QCoreApplication, QUrl, pyqtSignal, QObject
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QMessageBox, QWidget
 from PyQt5.uic import loadUiType
@@ -13,11 +13,26 @@ from ipywidgets.widgets import widget
 Ui_MainWindow = loadUiType("main.ui")[0]
 
 
+class MyTypeSignal(QObject):
+    # 定义一个信号
+    sendmsg = pyqtSignal(object)
+
+    # 调用run来实现触发
+    def run(self):
+        self.sendmsg.emit('Hello PyQt5')  # 给槽传递一个参数
+
+
+class MySlot(QObject):
+    # 槽函数
+    def get(self, msg):
+        print('信息：' + msg)
+
 class MainWindow(QMainWindow, Ui_MainWindow):
+
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
-        self.resize(800, 600)
+        self.resize(1200, 900)
 
         self.browser = QWebEngineView()
         self.browser.setHtml('''<!doctype html>
@@ -46,10 +61,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 resizeEnable: true, //是否监控地图容器尺寸变化
                 zoom:16, //初始化地图层级
                 center: [121.447477,31.025758] //初始化地图中心点
-            mymap.on('click', function(e) {
-                var lng = e.lnglat.getLng();
-                var lat = e.lnglat.getLat();
-                infoWindow.close();
             }
             );
         </script>
@@ -60,18 +71,32 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setLayout(layout)
         self.gridLayout_2.addWidget(self.browser)
         # 启动寻源
-        self.start.clicked.connect(self.appenText)
+        self.start.clicked.connect(self.appendText)
         # 停止寻源
-        self.start.clicked.connect(self.appenText2)
+        self.stop.clicked.connect(self.appendText2)
+        # 车辆返航
+        self.return_to_base.clicked(self.appendText3)
+        # 绑定快捷键
+        self.upbtn.setShortcut('w')
+        self.downbtn.setShortcut('s')
+        self.rightbtn.setShortcut('d')
+        self.leftbtn.setShortcut('a')
 
-        self.upbtn.shortcut
     # 状态信息显示
-    def appenText(self):
+    def appendText(self):
         self.textBrowser.append("自动寻源已启动")
 
-    def appenText2(self):
-        self.textBrowser.append("自动寻源已启动")
+    def appendText2(self):
+        self.textBrowser.append("自动寻源已停止")
 
+    def appendText3(self):
+        self.textBrowser.append("车辆正在返航")
+
+    def appenTextSpeed(self):
+        self.textBrowser.append("")
+
+    def signalCall1(self):
+        print("signal1 emit")
 
     # def showMsg():
     #     QMessageBox.information(self.widget, '信息提示框', 'cdse')
@@ -83,4 +108,11 @@ if __name__ == '__main__':
     mw = MainWindow()
 
     mw.show()
+
+    # 自定义信号与槽
+    send = MyTypeSignal()
+    slot = MySlot()
+    send.sendmsg.connect(slot.get)
+    send.run()#发送信号
+
     sys.exit(app.exec_())

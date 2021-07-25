@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>740</width>
-    <height>588</height>
+    <width>992</width>
+    <height>689</height>
    </rect>
   </property>
   <property name="font">
@@ -29,10 +29,10 @@
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>500</x>
+      <x>510</x>
       <y>10</y>
       <width>211</width>
-      <height>181</height>
+      <height>220</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -73,7 +73,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="return_to_base">
        <property name="font">
         <font>
          <family>Adobe 宋体 Std L</family>
@@ -94,7 +94,7 @@
         </font>
        </property>
        <property name="text">
-        <string>速度调节</string>
+        <string>巡航速度调节</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -103,6 +103,14 @@
      </item>
      <item>
       <widget class="QSlider" name="horizontalSlider">
+       <property name="font">
+        <font>
+         <pointsize>60</pointsize>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -113,10 +121,10 @@
    <widget class="QTextBrowser" name="textBrowser">
     <property name="geometry">
      <rect>
-      <x>500</x>
-      <y>200</y>
-      <width>221</width>
-      <height>121</height>
+      <x>780</x>
+      <y>300</y>
+      <width>211</width>
+      <height>351</height>
      </rect>
     </property>
     <property name="html">
@@ -124,16 +132,16 @@
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Adobe Devanagari'; font-size:24pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>500</x>
-      <y>320</y>
-      <width>221</width>
-      <height>141</height>
+      <x>470</x>
+      <y>440</y>
+      <width>301</width>
+      <height>147</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
@@ -146,7 +154,7 @@ p, li { white-space: pre-wrap; }
         </font>
        </property>
        <property name="text">
-        <string>最高温度</string>
+        <string>检测最高温度</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -196,8 +204,14 @@ p, li { white-space: pre-wrap; }
      </item>
      <item row="3" column="0">
       <widget class="QLabel" name="label_8">
+       <property name="font">
+        <font>
+         <family>Adobe 宋体 Std L</family>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
        <property name="text">
-        <string>小车电量</string>
+        <string>     小车电量</string>
        </property>
       </widget>
      </item>
@@ -215,8 +229,8 @@ p, li { white-space: pre-wrap; }
      <rect>
       <x>0</x>
       <y>280</y>
-      <width>341</width>
-      <height>261</height>
+      <width>461</width>
+      <height>271</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_2">
@@ -231,29 +245,29 @@ p, li { white-space: pre-wrap; }
       <x>0</x>
       <y>0</y>
       <width>461</width>
-      <height>261</height>
+      <height>271</height>
      </rect>
     </property>
    </widget>
    <widget class="QWidget" name="gridLayoutWidget_3">
     <property name="geometry">
      <rect>
-      <x>350</x>
-      <y>300</y>
-      <width>131</width>
-      <height>191</height>
+      <x>780</x>
+      <y>10</y>
+      <width>191</width>
+      <height>280</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_3">
-     <item row="4" column="2">
-      <widget class="QLCDNumber" name="lcdNumber_4"/>
-     </item>
      <item row="2" column="1" colspan="2">
       <widget class="QDialogButtonBox" name="buttonBox">
        <property name="standardButtons">
         <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
        </property>
       </widget>
+     </item>
+     <item row="4" column="2">
+      <widget class="QLCDNumber" name="lcdNumber_4"/>
      </item>
      <item row="5" column="1">
       <widget class="QProgressBar" name="progressBar">
@@ -272,9 +286,6 @@ p, li { white-space: pre-wrap; }
        </property>
       </widget>
      </item>
-     <item row="1" column="1" colspan="2">
-      <widget class="QTextEdit" name="textEdit"/>
-     </item>
      <item row="0" column="1" colspan="2">
       <widget class="QLabel" name="label_7">
        <property name="text">
@@ -282,43 +293,22 @@ p, li { white-space: pre-wrap; }
        </property>
       </widget>
      </item>
+     <item row="1" column="1" colspan="2">
+      <widget class="QTextEdit" name="textEdit"/>
+     </item>
     </layout>
    </widget>
    <widget class="QWidget" name="gridLayoutWidget_4">
     <property name="geometry">
      <rect>
-      <x>520</x>
-      <y>480</y>
-      <width>181</width>
-      <height>51</height>
+      <x>510</x>
+      <y>200</y>
+      <width>239</width>
+      <height>109</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_4">
-     <item row="1" column="0">
-      <widget class="QPushButton" name="leftbtn">
-       <property name="font">
-        <font>
-         <pointsize>16</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>LEFT</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="downbtn">
-       <property name="font">
-        <font>
-         <pointsize>16</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>DOWN</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
+     <item row="2" column="1">
       <widget class="QPushButton" name="upbtn">
        <property name="font">
         <font>
@@ -330,7 +320,31 @@ p, li { white-space: pre-wrap; }
        </property>
       </widget>
      </item>
-     <item row="1" column="2">
+     <item row="3" column="0">
+      <widget class="QPushButton" name="leftbtn">
+       <property name="font">
+        <font>
+         <pointsize>16</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>LEFT</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QPushButton" name="downbtn">
+       <property name="font">
+        <font>
+         <pointsize>16</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>DOWN</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="2">
       <widget class="QPushButton" name="rightbtn">
        <property name="font">
         <font>
@@ -342,6 +356,80 @@ p, li { white-space: pre-wrap; }
        </property>
       </widget>
      </item>
+     <item row="1" column="0" colspan="3">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>手动车辆控制</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget_5">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>300</y>
+      <width>239</width>
+      <height>109</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout_5">
+     <item row="2" column="1">
+      <widget class="QPushButton" name="upbtn_2">
+       <property name="font">
+        <font>
+         <pointsize>16</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>UP</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QPushButton" name="leftbtn_2">
+       <property name="font">
+        <font>
+         <pointsize>16</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>LEFT</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QPushButton" name="downbtn_2">
+       <property name="font">
+        <font>
+         <pointsize>16</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>DOWN</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="2">
+      <widget class="QPushButton" name="rightbtn_2">
+       <property name="font">
+        <font>
+         <pointsize>16</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>RIGHT</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0" colspan="3">
+      <widget class="QLabel" name="label_10">
+       <property name="text">
+        <string>手动摄像头控制</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
   </widget>
@@ -350,8 +438,8 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>740</width>
-     <height>18</height>
+     <width>992</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuconnect">
