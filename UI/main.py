@@ -128,7 +128,7 @@ if __name__ == '__main__':
     mw = MainWindow()
 
     mw.show()
-    motion.client.main()
+    # motion.client.main()
     # 自定义信号与槽
     send = MyTypeSignal()
     slot = MySlot()
