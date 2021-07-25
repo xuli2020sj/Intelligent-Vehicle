@@ -117,7 +117,7 @@ ReturnTemp = ''
 g_CarState = 0
 g_ServoState = 0
 # 小车速度变量
-CarSpeedControl = 2000
+CarSpeedControl = 1000
 # 寻迹，避障，寻光变量
 infrared_track_value = ''
 infrared_avoid_value = ''
@@ -153,8 +153,8 @@ def run():
     GPIO.output(IN3, GPIO.HIGH)
     GPIO.output(IN4, GPIO.LOW)
     # 启动PWM设置占空比为100（0--100）
-    pwm_ENA.start(100)
-    pwm_ENB.start(100)
+    pwm_ENA.start(50)
+    pwm_ENB.start(50)
 
 # 小车后退
 def back():
@@ -225,10 +225,18 @@ def do_service(connect_socket):
             # wiringpi.digitalWrite(0,0)
             print('client %s close' % str(connect_socket.getpeername()))
             break
-        if ((len(recv_data) == 1) and (recv_data.decode('gbk')[0] == '1')):
+        if ((len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'w')):
             print('youle')
             # wiringpi.digitalWrite(0,1)
             run()
+        elif ((len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 's')):
+            back()
+        elif ((len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'a')):
+            left()
+        elif ((len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'd')):
+            right()
+        elif ((len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'x')):
+            brake()
         # else:
         # wiringpi.digitalWrite(0,0)
         # if len(recv_data) > 1:
