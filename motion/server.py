@@ -141,6 +141,7 @@ def motor_init():
     GPIO.setup(ENB, GPIO.OUT, initial=GPIO.HIGH)
     GPIO.setup(IN3, GPIO.OUT, initial=GPIO.LOW)
     GPIO.setup(IN4, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(buzzer, GPIO.OUT, initial=GPIO.HIGH)
     # 设置pwm引脚和频率为2000hz
     pwm_ENA = GPIO.PWM(ENA, 1000)
     pwm_ENB = GPIO.PWM(ENB, 1000)
@@ -252,7 +253,7 @@ def do_service(connect_socket):
 
 
 def main():
-    motor_init()
+    init()
     # 0.init wiringpi
     # wiringpi.wiringPiSetup()
     # wiringpi.pinMode(0,1)
