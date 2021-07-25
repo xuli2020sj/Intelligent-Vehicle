@@ -10,6 +10,22 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QMessageBox,
 from PyQt5.uic import loadUiType
 from ipywidgets.widgets import widget
 import motion
+from socket import *
+from multiprocessing import Process
+from socket import *
+import threading
+# import wiringpi
+import threading
+
+
+# 小车电机引脚定义
+IN1 = 20
+IN2 = 21
+IN3 = 19
+IN4 = 26
+ENA = 16
+ENB = 13
+CarSpeedControl = 1000
 
 Ui_MainWindow = loadUiType("main.ui")[0]
 
@@ -122,13 +138,33 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     #     QMessageBox.information(self.widget, '信息提示框', 'cdse')
 
 
-if __name__ == '__main__':
+    def connect(self):
+        # 1.创建socket
+        client_socket = socket(AF_INET, SOCK_STREAM)
+
+        # 2.指定服务器的地址和端口号
+        server_addr = ('192.168.3.24', 8888)
+        client_socket.connect(server_addr)
+
+        print('connect %s success' % str(server_addr))
+
+        while True:
+            # 3.给用户提示，让用户输入要检索的资料
+            send_data = input('>>')
+            # 退出
+            if send_data == 'quit':
+                break
+            # 向服务器请求数据
+            client_socket.send(send_data.encode())
+
+        client_socket.close()
+
+
+def qtmain():
     QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
     app = QApplication(sys.argv)
     mw = MainWindow()
-
     mw.show()
-    motion.client.main()
     # 自定义信号与槽
     send = MyTypeSignal()
     slot = MySlot()
@@ -136,3 +172,7 @@ if __name__ == '__main__':
     send.run()#发送信号
 
     sys.exit(app.exec_())
+
+if __name__ == '__main__':
+    qtmain()
+

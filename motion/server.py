@@ -13,6 +13,7 @@ import RPi.GPIO as GPIO
 import time
 import string
 import threading
+import timeout_decorator
 
 # 按键值定义
 run_car = '1'  # 按键前
@@ -148,14 +149,15 @@ def init():
 
 
 # 小车前进
+@timeout_decorator.timeout(1)
 def run():
     GPIO.output(IN1, GPIO.HIGH)
     GPIO.output(IN2, GPIO.LOW)
     GPIO.output(IN3, GPIO.HIGH)
     GPIO.output(IN4, GPIO.LOW)
     # 启动PWM设置占空比为100（0--100）
-    pwm_ENA.start(50)
-    pwm_ENB.start(50)
+    pwm_ENA.start(100)
+    pwm_ENB.start(100)
 
 # 小车后退
 def back():
@@ -234,22 +236,26 @@ def do_service(connect_socket):
             # wiringpi.digitalWrite(0,0)
             print('client %s close' % str(connect_socket.getpeername()))
             break
+
+
         if (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'w'):
             run()
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 's'):
-            whistle()
-            back()
-            continue
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'a'):
-            left()
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'd'):
-            right()
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'x'):
-            brake()
-        # else:
+        # elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 's'):
+        #     whistle()
+        #     back()
+        #     continue
+        # elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'a'):
+        #     left()
+        # elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'd'):
+        #     right()
+        # elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'x'):
+        #     brake()
+        # # else:
         # wiringpi.digitalWrite(0,0)
         # if len(recv_data) > 1:
         # wiringpi.digitalWrite(0,0)
+
+
         print('recv: %s' % recv_data.decode('gbk'))
 
 
