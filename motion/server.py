@@ -135,97 +135,86 @@ GPIO.setwarnings(False)
 def init():
     global pwm_ENA
     global pwm_ENB
-    global delaytime
     GPIO.setup(ENA, GPIO.OUT, initial=GPIO.HIGH)
     GPIO.setup(IN1, GPIO.OUT, initial=GPIO.LOW)
     GPIO.setup(IN2, GPIO.OUT, initial=GPIO.LOW)
     GPIO.setup(ENB, GPIO.OUT, initial=GPIO.HIGH)
     GPIO.setup(IN3, GPIO.OUT, initial=GPIO.LOW)
     GPIO.setup(IN4, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(buzzer, GPIO.OUT, initial=GPIO.HIGH)
     # 设置pwm引脚和频率为2000hz
-    pwm_ENA = GPIO.PWM(ENA, 2000)
-    pwm_ENB = GPIO.PWM(ENB, 2000)
-    pwm_ENA.start(0)
-    pwm_ENB.start(0)
-    GPIO.setup(key, GPIO.IN)
+    pwm_ENA = GPIO.PWM(ENA, 1000)
+    pwm_ENB = GPIO.PWM(ENB, 1000)
 
 
 # 小车前进
-def run(delaytime):
+def run():
     GPIO.output(IN1, GPIO.HIGH)
     GPIO.output(IN2, GPIO.LOW)
     GPIO.output(IN3, GPIO.HIGH)
     GPIO.output(IN4, GPIO.LOW)
-    pwm_ENA.ChangeDutyCycle(80)
-    pwm_ENB.ChangeDutyCycle(80)
-    time.sleep(delaytime)
-
+    # 启动PWM设置占空比为100（0--100）
+    pwm_ENA.start(50)
+    pwm_ENB.start(50)
 
 # 小车后退
-def back(delaytime):
+def back():
     GPIO.output(IN1, GPIO.LOW)
     GPIO.output(IN2, GPIO.HIGH)
     GPIO.output(IN3, GPIO.LOW)
     GPIO.output(IN4, GPIO.HIGH)
-    pwm_ENA.ChangeDutyCycle(80)
-    pwm_ENB.ChangeDutyCycle(80)
-    time.sleep(delaytime)
+    pwm_ENA.ChangeDutyCycle(CarSpeedControl)
+    pwm_ENB.ChangeDutyCycle(CarSpeedControl)
+    time.sleep(1)
+    brake()
 
 
 # 小车左转
-def left(delaytime):
+def left():
     GPIO.output(IN1, GPIO.LOW)
     GPIO.output(IN2, GPIO.LOW)
     GPIO.output(IN3, GPIO.HIGH)
     GPIO.output(IN4, GPIO.LOW)
-    pwm_ENA.ChangeDutyCycle(80)
-    pwm_ENB.ChangeDutyCycle(80)
-    time.sleep(delaytime)
+    pwm_ENA.ChangeDutyCycle(CarSpeedControl)
+    pwm_ENB.ChangeDutyCycle(CarSpeedControl)
 
 
 # 小车右转
-def right(delaytime):
+def right():
     GPIO.output(IN1, GPIO.HIGH)
     GPIO.output(IN2, GPIO.LOW)
     GPIO.output(IN3, GPIO.LOW)
     GPIO.output(IN4, GPIO.LOW)
-    pwm_ENA.ChangeDutyCycle(80)
-    pwm_ENB.ChangeDutyCycle(80)
-    time.sleep(delaytime)
+    pwm_ENA.ChangeDutyCycle(CarSpeedControl)
+    pwm_ENB.ChangeDutyCycle(CarSpeedControl)
 
 
 # 小车原地左转
-def spin_left(delaytime):
+def spin_left():
     GPIO.output(IN1, GPIO.LOW)
     GPIO.output(IN2, GPIO.HIGH)
     GPIO.output(IN3, GPIO.HIGH)
     GPIO.output(IN4, GPIO.LOW)
-    pwm_ENA.ChangeDutyCycle(80)
-    pwm_ENB.ChangeDutyCycle(80)
-    time.sleep(delaytime)
+    pwm_ENA.ChangeDutyCycle(CarSpeedControl)
+    pwm_ENB.ChangeDutyCycle(CarSpeedControl)
 
 
 # 小车原地右转
-def spin_right(delaytime):
+def spin_right():
     GPIO.output(IN1, GPIO.HIGH)
     GPIO.output(IN2, GPIO.LOW)
     GPIO.output(IN3, GPIO.LOW)
     GPIO.output(IN4, GPIO.HIGH)
-    pwm_ENA.ChangeDutyCycle(80)
-    pwm_ENB.ChangeDutyCycle(80)
-    time.sleep(delaytime)
+    pwm_ENA.ChangeDutyCycle(CarSpeedControl)
+    pwm_ENB.ChangeDutyCycle(CarSpeedControl)
 
 
 # 小车停止
-def brake(delaytime):
+def brake():
     GPIO.output(IN1, GPIO.LOW)
     GPIO.output(IN2, GPIO.LOW)
     GPIO.output(IN3, GPIO.LOW)
     GPIO.output(IN4, GPIO.LOW)
-    pwm_ENA.ChangeDutyCycle(80)
-    pwm_ENB.ChangeDutyCycle(80)
-    time.sleep(delaytime)
-
 
 #
 def whistle():
@@ -233,7 +222,6 @@ def whistle():
     time.sleep(0.1)
     GPIO.output(buzzer, GPIO.HIGH)
     time.sleep(0.001)
-
 
 ################################################################ 需要为客户端提供服务
 def do_service(connect_socket):
@@ -247,7 +235,17 @@ def do_service(connect_socket):
             print('client %s close' % str(connect_socket.getpeername()))
             break
         if (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'w'):
-            run(3)
+            run()
+        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 's'):
+            whistle()
+            back()
+            continue
+        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'a'):
+            left()
+        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'd'):
+            right()
+        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'x'):
+            brake()
         # else:
         # wiringpi.digitalWrite(0,0)
         # if len(recv_data) > 1:
@@ -292,6 +290,7 @@ def main():
 
         # 父进程，关闭connect_socket
         connect_socket.close()
+
 
 
 if __name__ == "__main__":
