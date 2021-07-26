@@ -293,7 +293,7 @@ def do_service(connect_socket):
                 brake()
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'y'):
             with eventlet.Timeout(1, False):
-                frontservo_appointed_detection(20)
+                frontservo_appointed_detection(100)
         # # else:
         # wiringpi.digitalWrite(0,0)
         # if len(recv_data) > 1:

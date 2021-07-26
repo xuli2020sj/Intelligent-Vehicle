@@ -11,7 +11,7 @@ def main():
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     # 2.指定服务器的地址和端口号
-    server_addr = ('192.168.3.24', 8888)
+    server_addr = ('192.168.3.69', 8888)
     client_socket.connect(server_addr)
 
     print('connect %s success' % str(server_addr))
