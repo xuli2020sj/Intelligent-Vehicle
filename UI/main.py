@@ -169,6 +169,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def ccmd(self, text):
         print(text)
+        self.tcpthread.setMesg(text)
 
     # 启动摄像头
     def camStart(self):
@@ -176,8 +177,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     # 启动TCP
     def TcpStart(self):
-        self.tcpthread.start()
-
+        # self.tcpthread.start()
+        pass
     # 状态信息显示
     def appendText(self):
         self.textBrowser.append("自动寻源已启动")
