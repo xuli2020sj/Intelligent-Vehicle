@@ -140,7 +140,7 @@ class TimeoutException(Exception):
     pass
 
 
-ThreadStop = Thread._Thread__stop
+ThreadStop = Thread._stop()
 
 
 def timelimited(timeout):
