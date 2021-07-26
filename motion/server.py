@@ -305,14 +305,11 @@ def do_service(connect_socket):
             with eventlet.Timeout(1, False):
                 brake()
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'y'):
-            with eventlet.Timeout(1, False):
-                frontservo_appointed_detection(100)
+            frontservo_appointed_detection(100)
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'i'):
-            with eventlet.Timeout(1, False):
-                leftrightservo_appointed_detection(50)
+            leftrightservo_appointed_detection(50)
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'o'):
-            with eventlet.Timeout(1, False):
-                updownservo_appointed_detection(50)
+            updownservo_appointed_detection(50)
         # # else:
         # wiringpi.digitalWrite(0,0)
         # if len(recv_data) > 1:
