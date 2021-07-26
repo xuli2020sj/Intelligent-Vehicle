@@ -229,6 +229,7 @@ try:
     key_scan()
     while True:
         distance = Distance_test()
+
         if distance > 50:
             # 遇到障碍物,红外避障模块的指示灯亮,端口电平为LOW
             # 未遇到障碍物,红外避障模块的指示灯灭,端口电平为HIGH
