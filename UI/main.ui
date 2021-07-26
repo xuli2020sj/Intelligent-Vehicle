@@ -464,7 +464,7 @@ p, li { white-space: pre-wrap; }
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="connect">
        <property name="text">
         <string>连接</string>
        </property>

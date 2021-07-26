@@ -1,22 +1,27 @@
 # coding=UTF-8
 import os
+import struct
 import sys
+import time
+
 import cv2
 import PyQt5
-from PyQt5 import QtCore
-from PyQt5.QtCore import QCoreApplication, QUrl, pyqtSignal, QObject
+import numpy
+import numpy as np
+from PyQt5 import QtCore, QtWidgets, QtGui
+from PyQt5.QtCore import QCoreApplication, QUrl, pyqtSignal, QObject, QThread, pyqtSlot, Qt
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QMessageBox, QWidget
 from PyQt5.uic import loadUiType
 from ipywidgets.widgets import widget
 import motion
-from socket import *
+import socket
 from multiprocessing import Process
-from socket import *
+
 import threading
 # import wiringpi
 import threading
-
 
 # 小车电机引脚定义
 IN1 = 20
@@ -27,6 +32,8 @@ ENA = 16
 ENB = 13
 CarSpeedControl = 1000
 
+
+# 加载qt文件
 Ui_MainWindow = loadUiType("main.ui")[0]
 
 
@@ -43,6 +50,7 @@ class MySlot(QObject):
     # 槽函数
     def get(self, msg):
         print('信息：' + msg)
+
 
 class MainWindow(QMainWindow, Ui_MainWindow):
 
@@ -92,7 +100,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # 停止寻源
         self.stop.clicked.connect(self.stopText)
         # 车辆返航
-#        self.return_to_base.clicked(self.appendText3)
+        #        self.return_to_base.clicked(self.appendText3)
         # 绑定快捷键
         self.upbtn.setShortcut('w')
         self.upbtn.released.connect(self.forwardText)
@@ -105,6 +113,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.stop.setShortcut('x')
         self.stop.pressed.connect(self.stopText)
 
+        self.label_show_camera = QtWidgets.QLabel()  # 定义显示视频的Label
+        self.label_show_camera.setFixedSize(641, 481)  # 给显示视频的Label设置大小为641x481
+
+        self.mythread = CamThread()  # 实例化任务线程类
+        self.connect.clicked.connect(self.camStart)
+        # self.mythread.start()
+        # self.mythread.signal.connect(self.callback) #设置任务线程发射信号触发的函数
+
+    # 启动摄像头
+    def camStart(self):
+        self.mythread.start()
+
     # 状态信息显示
     def appendText(self):
         self.textBrowser.append("自动寻源已启动")
@@ -113,7 +133,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.textBrowser.append("小车已停止")
 
     def appendText3(self):
-        self.textBrowser.append("车辆正在返 航")
+        self.textBrowser.append("车辆正在返航")
 
     def appenTextSpeed(self):
         self.textBrowser.append("")
@@ -134,31 +154,62 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def leftText(self):
         self.textBrowser.append("小车左转")
 
-    # def showMsg():
-    #     QMessageBox.information(self.widget, '信息提示框', 'cdse')
+    @pyqtSlot(np.ndarray)
+    def update_image(self, cv_img):
+        """Updates the image_label with a new opencv image"""
+        qt_img = self.convert_cv_qt(cv_img)
+        self.image_label.setPixmap(qt_img)
+
+    def convert_cv_qt(self, cv_img):
+        """Convert from an opencv image to QPixmap"""
+        rgb_image = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)
+        h, w, ch = rgb_image.shape
+        bytes_per_line = ch * w
+        convert_to_Qt_format = QtGui.QImage(rgb_image.data, w, h, bytes_per_line, QtGui.QImage.Format_RGB888)
+        p = convert_to_Qt_format.scaled(self.disply_width, self.display_height, Qt.KeepAspectRatio)
+        return QPixmap.fromImage(p)
 
 
-    def connect(self):
-        # 1.创建socket
-        client_socket = socket(AF_INET, SOCK_STREAM)
+class CamThread(QThread):  # 建立一个任务线程类
+    signal = pyqtSignal(str)  # 设置触发信号传递的参数数据类型,这里是字符串
 
-        # 2.指定服务器的地址和端口号
-        server_addr = ('192.168.3.24', 8888)
-        client_socket.connect(server_addr)
+    def __init__(self):
+        super(CamThread, self).__init__()
 
-        print('connect %s success' % str(server_addr))
+    def run(self):  # 在启动线程后任务从这个函数里面开始执行
+        HOST = '192.168.3.18'
+        PORT = 9999
+        buffSize = 65535
 
+        server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # 创建socket对象
+        server.bind((HOST, PORT))
+        print('now waiting for frames...')
         while True:
-            # 3.给用户提示，让用户输入要检索的资料
-            send_data = input('>>')
-            # 退出
-            if send_data == 'quit':
+            data, address = server.recvfrom(buffSize)  # 先接收的是字节长度
+            if len(data) == 1 and data[0] == 1:  # 如果收到关闭消息则停止程序
+                server.close()
+                cv2.destroyAllWindows()
+                exit()
+            if len(data) != 4:  # 进行简单的校验，长度值是int类型，占四个字节
+                length = 0
+            else:
+                length = struct.unpack('i', data)[0]  # 长度值
+            data, address = server.recvfrom(buffSize)  # 接收编码图像数据
+            if length != len(data):  # 进行简单的校验
+                continue
+            data = numpy.array(bytearray(data))  # 格式转换
+            imgdecode = cv2.imdecode(data, 1)  # 解码
+            print('have received one frame')
+            cv2.imshow('frames', imgdecode)  # 窗口显示
+            if cv2.waitKey(1) == 27:  # 按下“ESC”退出
                 break
-            # 向服务器请求数据
-            client_socket.send(send_data.encode())
+        server.close()
+        cv2.destroyAllWindows()
 
-        client_socket.close()
-
+        # for i in range(10):
+        #     print("i")
+        #     # self.signal.emit(str(i))  # 任务线程发射信号用于与图形化界面进行交互
+        #     time.sleep(1)
 
 def qtmain():
     QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
@@ -169,10 +220,10 @@ def qtmain():
     send = MyTypeSignal()
     slot = MySlot()
     send.sendmsg.connect(slot.get)
-    send.run()#发送信号
+    send.run()  # 发送信号
 
     sys.exit(app.exec_())
 
+
 if __name__ == '__main__':
     qtmain()
-
