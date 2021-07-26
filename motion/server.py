@@ -131,72 +131,14 @@ GPIO.setmode(GPIO.BCM)
 # 忽略警告信息
 GPIO.setwarnings(False)
 
-# -*- coding: utf-8 -*-
-from threading import Thread
+import requests
+import eventlet
 import time
 
-
-class TimeoutException(Exception):
-    pass
+eventlet.monkey_patch()
 
 
-ThreadStop = Thread._stop()
 
-
-def timelimited(timeout):
-    def decorator(function):
-        def decorator2(*args, **kwargs):
-            class TimeLimited(Thread):
-                def __init__(self, _error=None, ):
-                    Thread.__init__(self)
-                    self._error = _error
-
-                def run(self):
-                    try:
-                        self.result = function(*args, **kwargs)
-                    except Exception as e:
-                        self._error = str(e)
-
-                def _stop(self):
-                    if self.isAlive():
-                        ThreadStop(self)
-
-            t = TimeLimited()
-            t.start()
-            t.join(timeout)
-
-            if isinstance(t._error, TimeoutException):
-                t._stop()
-                raise TimeoutException('timeout for %s' % (repr(function)))
-
-            if t.isAlive():
-                t._stop()
-                raise TimeoutException('timeout for %s' % (repr(function)))
-
-            if t._error is None:
-                return t.result
-
-        return decorator2
-
-    return decorator
-
-
-@timelimited(2)  # 设置运行超时时间2S
-def fn_1(secs):
-    time.sleep(secs)
-    return 'Finished without timeout'
-
-
-def do_something_after_timeout():
-    print('Time out!')
-
-
-if __name__ == "__main__":
-    try:
-        print(fn_1(3))  # 设置函数执行3S
-    except TimeoutException as e:
-        print(str(e))
-        do_something_after_timeout()
 
 # 电机引脚初始化操作
 def init():
@@ -303,13 +245,11 @@ def do_service(connect_socket):
             print('client %s close' % str(connect_socket.getpeername()))
             break
 
-
         if (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'w'):
-            try:
-                run()  # 设置函数执行3S
-            except TimeoutException as e:
-                print(str(e))
-                do_something_after_timeout()
+            with eventlet.Timeout(1, False):
+                run()
+                print('error')
+            print('over')
         # elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 's'):
         #     whistle()
         #     back()
