@@ -263,7 +263,7 @@ def frontservo_appointed_detection(pos):
     for i in range(18):
         pwm_FrontServo.ChangeDutyCycle(2.5 + 10 * pos / 180)
         time.sleep(0.02)  # 等待20ms周期结束
-        # pwm_FrontServo.ChangeDutyCycle(0) #归零信号
+        pwm_FrontServo.ChangeDutyCycle(0) #归零信号
 
 ################################################################ 需要为客户端提供服务
 def do_service(connect_socket):
