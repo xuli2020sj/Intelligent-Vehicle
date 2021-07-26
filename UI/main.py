@@ -231,7 +231,7 @@ class CamThread(QThread):  # 建立一个任务线程类
         super(CamThread, self).__init__()
 
     def run(self):  # 在启动线程后任务从这个函数里面开始执行
-        HOST = '192.168.3.69'
+        HOST = '192.168.3.24'
         PORT = 9999
         buffSize = 65535
 
@@ -259,6 +259,7 @@ class CamThread(QThread):  # 建立一个任务线程类
                 break
         server.close()
         cv2.destroyAllWindows()
+
 
 
 class thermalCamThread(QThread):  # 建立一个任务线程类
