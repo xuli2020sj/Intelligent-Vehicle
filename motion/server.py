@@ -304,6 +304,12 @@ def do_service(connect_socket):
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'x'):
             with eventlet.Timeout(1, False):
                 brake()
+        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'e'):
+            with eventlet.Timeout(1, False):
+                spin_right()
+        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'q'):
+            with eventlet.Timeout(1, False):
+                spin_left()
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'y'):
             frontservo_appointed_detection(100)
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'i'):

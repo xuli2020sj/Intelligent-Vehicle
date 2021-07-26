@@ -230,7 +230,7 @@ class CamThread(QThread):  # 建立一个任务线程类
         super(CamThread, self).__init__()
 
     def run(self):  # 在启动线程后任务从这个函数里面开始执行
-        HOST = '192.168.3.18'
+        HOST = '192.168.3.69'
         PORT = 9999
         buffSize = 65535
 
@@ -305,6 +305,7 @@ class TcpThread(QThread):  # 建立一个任务线程类
         super(TcpThread, self).__init__()
 
     def setMesg(self, str):
+        print(str)
         self.mesg = str
 
     def run(self):  # 在启动线程后任务从这个函数里面开始执行
@@ -312,7 +313,7 @@ class TcpThread(QThread):  # 建立一个任务线程类
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         # 2.指定服务器的地址和端口号
-        server_addr = ('192.168.3.24', 8888)
+        server_addr = ('192.168.3.69', 8888)
         client_socket.connect(server_addr)
 
         print('connect %s success' % str(server_addr))
@@ -326,6 +327,7 @@ class TcpThread(QThread):  # 建立一个任务线程类
             # # 向服务器请求数据
             # client_socket.send(send_data.encode())
             client_socket.send(self.mesg.encode())
+            time.sleep(0.1)
 
         client_socket.close()
 
