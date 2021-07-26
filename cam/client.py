@@ -21,6 +21,7 @@ try:
         print('have sent one frame')
 except Exception as e:
     print(e)
+    print("fuck")
     server.sendall(struct.pack('c', 1))  # 发送关闭消息
     capture.release()
     server.close()
