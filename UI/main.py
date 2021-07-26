@@ -35,22 +35,6 @@ CarSpeedControl = 1000
 # 加载qt文件
 Ui_MainWindow = loadUiType("main.ui")[0]
 
-
-class MyTypeSignal(QObject):
-    # 定义一个信号
-    sendmsg = pyqtSignal(object)
-
-    # 调用run来实现触发
-    def run(self):
-        self.sendmsg.emit('Hello PyQt5')  # 给槽传递一个参数
-
-
-class MySlot(QObject):
-    # 槽函数
-    def get(self, msg):
-        print('信息：' + msg)
-
-
 class MainWindow(QMainWindow, Ui_MainWindow):
     motionSin = pyqtSignal(str)
 
@@ -140,8 +124,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.camthread = CamThread()  # 实例化任务线程类
         self.connect.clicked.connect(self.camStart)
 
-        # self.tcpthread = TcpThread()  # 实例化任务线程类
-        # self.connect.clicked.connect(self.TcpStart)
+        self.tcpthread = TcpThread()  # 实例化任务线程类
+        self.connect.clicked.connect(self.TcpStart)
 
     def forwardc(self):
         self.motionSin.emit("w")
@@ -174,7 +158,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     # 启动TCP
     def TcpStart(self):
-        # self.tcpthread.start()
+        self.tcpthread.start()
         pass
     # 状态信息显示
     def appendText(self):
