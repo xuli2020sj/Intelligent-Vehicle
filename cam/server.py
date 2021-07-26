@@ -1,23 +1,33 @@
-#!/usr/bin/env python
-# -*- coding=utf-8 -*-
-
 import cv2
-import zmq
-import base64
-import numpy as np
+import numpy
+import socket
+import struct
 
-"""实例化用来接收帧的zmq对象"""
-context = zmq.Context()
-"""zmq对象建立TCP链接"""
-footage_socket = context.socket(zmq.PAIR)
-footage_socket.bind('tcp://*:5555')
-if __name__ == '__main__':
-    
-    while True:
-        print("listion")
-        frame = footage_socket.recv_string() #接收TCP传输过来的一帧视频图像数据
-        img = base64.b64decode(frame) #把数据进行base64解码后储存到内存img变量中
-        npimg = np.frombuffer(img, dtype=np.uint8) #把这段缓存解码成一维数组
-        source = cv2.imdecode(npimg, 1) #将一维数组解码为图像source
-        cv2.imshow("Stream", source) #把图像显示在窗口中
-        cv2.waitKey(1) #延时等待，防止出现窗口无响应
+HOST='192.168.3.18'
+PORT=9999
+buffSize=65535
+
+server=socket.socket(socket.AF_INET,socket.SOCK_DGRAM) #创建socket对象
+server.bind((HOST,PORT))
+print('now waiting for frames...')
+while True:
+    data,address=server.recvfrom(buffSize) #先接收的是字节长度
+    if len(data)==1 and data[0]==1: #如果收到关闭消息则停止程序
+        server.close()
+        cv2.destroyAllWindows()
+        exit()
+    if len(data)!=4: #进行简单的校验，长度值是int类型，占四个字节
+        length=0
+    else:
+        length=struct.unpack('i',data)[0] #长度值
+    data,address=server.recvfrom(buffSize) #接收编码图像数据
+    if length!=len(data): #进行简单的校验
+        continue
+    data=numpy.array(bytearray(data)) #格式转换
+    imgdecode=cv2.imdecode(data,1) #解码
+    print('have received one frame')
+    cv2.imshow('frames',imgdecode) #窗口显示
+    if cv2.waitKey(1)==27: #按下“ESC”退出
+        break
+server.close()
+cv2.destroyAllWindows()
