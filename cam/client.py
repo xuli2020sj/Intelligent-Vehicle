@@ -15,10 +15,10 @@ try:
         success,frame=capture.read()
         while not success and frame is None:
             success,frame=capture.read()  #获取视频帧
-    result,imgencode=cv2.imencode('.jpg',frame,[cv2.IMWRITE_JPEG_QUALITY,50])  #编码
-    server.sendall(struct.pack('i',imgencode.shape[0])) #发送编码后的字节长度，这个值不是固定的
-    server.sendall(imgencode) #发送视频帧数据
-    print('have sent one frame')
+        result,imgencode=cv2.imencode('.jpg',frame,[cv2.IMWRITE_JPEG_QUALITY,50])  #编码
+        server.sendall(struct.pack('i',imgencode.shape[0])) #发送编码后的字节长度，这个值不是固定的
+        server.sendall(imgencode) #发送视频帧数据
+        print('have sent one frame')
 except Exception as e:
     print(e)
     server.sendall(struct.pack('c',1)) #发送关闭消息
