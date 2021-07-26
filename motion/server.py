@@ -118,7 +118,7 @@ ReturnTemp = ''
 g_CarState = 0
 g_ServoState = 0
 # 小车速度变量
-CarSpeedControl = 1000
+CarSpeedControl = 50
 # 寻迹，避障，寻光变量
 infrared_track_value = ''
 infrared_avoid_value = ''
@@ -252,11 +252,14 @@ def do_service(connect_socket):
             with eventlet.Timeout(1, False):
                 back()
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'a'):
-            left()
+            with eventlet.Timeout(1, False):
+                left()
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'd'):
-            right()
+            with eventlet.Timeout(1, False):
+                right()
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'x'):
-            brake()
+            with eventlet.Timeout(1, False):
+                brake()
         # # else:
         # wiringpi.digitalWrite(0,0)
         # if len(recv_data) > 1:
