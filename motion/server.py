@@ -249,7 +249,7 @@ def do_service(connect_socket):
             with eventlet.Timeout(1, False):
                 run()
                 print('error')
-            print('over')
+            continue
         # elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 's'):
         #     whistle()
         #     back()
