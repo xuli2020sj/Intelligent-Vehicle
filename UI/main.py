@@ -134,18 +134,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.motionSin.connect(self.ccmd)
 
-
-        self.label_show_camera = QtWidgets.QLabel()  # 定义显示视频的Label
-        self.label_show_camera.setFixedSize(641, 481)  # 给显示视频的Label设置大小为641x481
+        # self.label_show_camera = QtWidgets.QLabel()  # 定义显示视频的Label
+        # self.label_show_camera.setFixedSize(641, 481)  # 给显示视频的Label设置大小为641x481
 
         self.camthread = CamThread()  # 实例化任务线程类
         self.connect.clicked.connect(self.camStart)
 
-        self.tcpthread = TcpThread()  # 实例化任务线程类
-        self.connect.clicked.connect(self.TcpStart)
+        # self.tcpthread = TcpThread()  # 实例化任务线程类
+        # self.connect.clicked.connect(self.TcpStart)
 
-        # self.mythread.start()
-        # self.mythread.signal.connect(self.callback) #设置任务线程发射信号触发的函数
     def forwardc(self):
         self.motionSin.emit("w")
 
@@ -208,20 +205,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def leftText(self):
         self.textBrowser.append("小车左转")
 
-    @pyqtSlot(np.ndarray)
-    def update_image(self, cv_img):
-        """Updates the image_label with a new opencv image"""
-        qt_img = self.convert_cv_qt(cv_img)
-        self.image_label.setPixmap(qt_img)
-
-    def convert_cv_qt(self, cv_img):
-        """Convert from an opencv image to QPixmap"""
-        rgb_image = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)
-        h, w, ch = rgb_image.shape
-        bytes_per_line = ch * w
-        convert_to_Qt_format = QtGui.QImage(rgb_image.data, w, h, bytes_per_line, QtGui.QImage.Format_RGB888)
-        p = convert_to_Qt_format.scaled(self.disply_width, self.display_height, Qt.KeepAspectRatio)
-        return QPixmap.fromImage(p)
+    # @pyqtSlot(np.ndarray)
+    # def update_image(self, cv_img):
+    #     """Updates the image_label with a new opencv image"""
+    #     qt_img = self.convert_cv_qt(cv_img)
+    #     self.image_label.setPixmap(qt_img)
+    #
+    # def convert_cv_qt(self, cv_img):
+    #     """Convert from an opencv image to QPixmap"""
+    #     rgb_image = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)
+    #     h, w, ch = rgb_image.shape
+    #     bytes_per_line = ch * w
+    #     convert_to_Qt_format = QtGui.QImage(rgb_image.data, w, h, bytes_per_line, QtGui.QImage.Format_RGB888)
+    #     p = convert_to_Qt_format.scaled(self.disply_width, self.display_height, Qt.KeepAspectRatio)
+    #     return QPixmap.fromImage(p)
 
 
 class CamThread(QThread):  # 建立一个任务线程类
