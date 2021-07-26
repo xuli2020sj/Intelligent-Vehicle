@@ -248,7 +248,7 @@ def do_service(connect_socket):
         if (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'w'):
             with eventlet.Timeout(1, False):
                 run()
-                print('error')
+                brake()
             continue
         # elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 's'):
         #     whistle()
