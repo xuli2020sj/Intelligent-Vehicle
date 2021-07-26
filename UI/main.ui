@@ -357,14 +357,14 @@ p, li { white-space: pre-wrap; }
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="sleftbtn">
        <property name="text">
         <string>SpinL</string>
        </property>
       </widget>
      </item>
      <item row="2" column="2">
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="srightbtn">
        <property name="text">
         <string>SpinR</string>
        </property>

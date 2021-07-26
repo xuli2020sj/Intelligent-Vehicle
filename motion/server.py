@@ -15,33 +15,33 @@ import string
 import threading
 import timeout_decorator
 
-# 按键值定义
-run_car = '1'  # 按键前
-back_car = '2'  # 按键后
-left_car = '3'  # 按键左
-right_car = '4'  # 按键右
-stop_car = '0'  # 按键停
+#按键值定义
+run_car  = '1'  #按键前
+back_car = '2'  #按键后
+left_car = '3'  #按键左
+right_car = '4' #按键右
+stop_car = '0'  #按键停
 
-# 舵机按键值定义
-front_left_servo = '1'  # 前舵机向左
-front_right_servo = '2'  # 前舵机向右
-up_servo = '3'  # 摄像头舵机向上
-down_servo = '4'  # 摄像头舵机向下
-left_servo = '6'  # 摄像头舵机向左
-right_servo = '7'  # 摄像头舵机向右
-updowninit_servo = '5'  # 摄像头舵机上下复位
-stop_servo = '8'  # 舵机停止
+#舵机按键值定义
+front_left_servo = '1'  #前舵机向左
+front_right_servo = '2' #前舵机向右
+up_servo = '3'          #摄像头舵机向上
+down_servo = '4'        #摄像头舵机向下
+left_servo = '6'        #摄像头舵机向左
+right_servo = '7'       #摄像头舵机向右
+updowninit_servo = '5'  #摄像头舵机上下复位
+stop_servo = '8'        #舵机停止
 
-# 小车状态值定义
+#小车状态值定义
 enSTOP = 0
-enRUN = 1
+enRUN =1
 enBACK = 2
 enLEFT = 3
 enRIGHT = 4
-enTLEFT = 5
+enTLEFT =5
 enTRIGHT = 6
 
-# 小车舵机定义
+#小车舵机定义
 enFRONTSERVOLEFT = 1
 enFRONTSERVORIGHT = 2
 enSERVOUP = 3
@@ -51,13 +51,16 @@ enSERVOLEFT = 6
 enSERVORIGHT = 7
 enSERVOSTOP = 8
 
-# 初始化上下左右角度为90度
+
+
+#初始化上下左右角度为90度
 ServoLeftRightPos = 90
 ServoUpDownPos = 90
 g_frontServoPos = 90
 g_nowfrontPos = 0
 
-# 小车电机引脚定义
+
+#小车电机引脚定义
 IN1 = 20
 IN2 = 21
 IN3 = 19
@@ -65,70 +68,70 @@ IN4 = 26
 ENA = 16
 ENB = 13
 
-# 小车按键定义
+#小车按键定义
 key = 8
 
-# 超声波引脚定义
+#超声波引脚定义
 EchoPin = 0
 TrigPin = 1
 
-# RGB三色灯引脚定义
+#RGB三色灯引脚定义
 LED_R = 22
 LED_G = 27
 LED_B = 24
 
-# 舵机引脚定义
+#舵机引脚定义
 FrontServoPin = 23
 ServoUpDownPin = 9
 ServoLeftRightPin = 11
 
-# 红外避障引脚定义
+#红外避障引脚定义
 AvoidSensorLeft = 12
 AvoidSensorRight = 17
 
-# 蜂鸣器引脚定义
+#蜂鸣器引脚定义
 buzzer = 8
 
-# 灭火电机引脚设置
+#灭火电机引脚设置
 OutfirePin = 2
 
-# 循迹红外引脚定义
-# TrackSensorLeftPin1 TrackSensorLeftPin2 TrackSensorRightPin1 TrackSensorRightPin2
+#循迹红外引脚定义
+#TrackSensorLeftPin1 TrackSensorLeftPin2 TrackSensorRightPin1 TrackSensorRightPin2
 #      3                 5                  4                   18
-TrackSensorLeftPin1 = 3  # 定义左边第一个循迹红外传感器引脚为3口
-TrackSensorLeftPin2 = 5  # 定义左边第二个循迹红外传感器引脚为5口
-TrackSensorRightPin1 = 4  # 定义右边第一个循迹红外传感器引脚为4口
-TrackSensorRightPin2 = 18  # 定义右边第二个循迹红外传感器引脚为18口
+TrackSensorLeftPin1  =  3   #定义左边第一个循迹红外传感器引脚为3口
+TrackSensorLeftPin2  =  5   #定义左边第二个循迹红外传感器引脚为5口
+TrackSensorRightPin1 =  4   #定义右边第一个循迹红外传感器引脚为4口
+TrackSensorRightPin2 =  18  #定义右边第二个循迹红外传感器引脚为18口
 
-# 光敏电阻引脚定义
+#光敏电阻引脚定义
 LdrSensorLeft = 7
 LdrSensorRight = 6
 
-# 变量的定义
-# 七彩灯RGB三色变量定义
+#变量的定义
+#七彩灯RGB三色变量定义
 red = 0
 green = 0
 blue = 0
-# TCP通信数据包标志位以及接受和发送数据变量
+#TCP通信数据包标志位以及接受和发送数据变量
 NewLineReceived = 0
 InputString = ''
 recvbuf = ''
 ReturnTemp = ''
-# 小车和舵机状态变量
+#小车和舵机状态变量
 g_CarState = 0
 g_ServoState = 0
-# 小车速度变量
-CarSpeedControl = 50
-# 寻迹，避障，寻光变量
+#小车速度变量
+CarSpeedControl =  30
+#寻迹，避障，寻光变量
 infrared_track_value = ''
 infrared_avoid_value = ''
 LDR_value = ''
 g_lednum = 0
 
-# 设置GPIO口为BCM编码方式
+#设置GPIO口为BCM编码方式
 GPIO.setmode(GPIO.BCM)
 
-# 忽略警告信息
+#忽略警告信息
 GPIO.setwarnings(False)
 
 import requests
@@ -144,20 +147,40 @@ eventlet.monkey_patch()
 def init():
     global pwm_ENA
     global pwm_ENB
+    global delaytime
+    global CarSpeedControl
+    global pwm_FrontServo
+    global pwm_UpDownServo
+    global pwm_LeftRightServo
+
     GPIO.setup(ENA, GPIO.OUT, initial=GPIO.HIGH)
     GPIO.setup(IN1, GPIO.OUT, initial=GPIO.LOW)
     GPIO.setup(IN2, GPIO.OUT, initial=GPIO.LOW)
     GPIO.setup(ENB, GPIO.OUT, initial=GPIO.HIGH)
     GPIO.setup(IN3, GPIO.OUT, initial=GPIO.LOW)
     GPIO.setup(IN4, GPIO.OUT, initial=GPIO.LOW)
-    GPIO.setup(buzzer, GPIO.OUT, initial=GPIO.HIGH)
+
+    GPIO.setup(EchoPin, GPIO.IN)
+    GPIO.setup(TrigPin, GPIO.OUT)
+    GPIO.setup(FrontServoPin, GPIO.OUT)
+    GPIO.setup(ServoUpDownPin, GPIO.OUT)
+    GPIO.setup(ServoLeftRightPin, GPIO.OUT)
+
     # 设置pwm引脚和频率为2000hz
-    pwm_ENA = GPIO.PWM(ENA, 1000)
-    pwm_ENB = GPIO.PWM(ENB, 1000)
+    pwm_ENA = GPIO.PWM(ENA, 2000)
+    pwm_ENB = GPIO.PWM(ENB, 2000)
+    # pwm_ENA.start(0)
+    # pwm_ENB.start(0)
+
+    pwm_FrontServo = GPIO.PWM(FrontServoPin, 50)
+    pwm_UpDownServo = GPIO.PWM(ServoUpDownPin, 50)
+    pwm_LeftRightServo = GPIO.PWM(ServoLeftRightPin, 50)
+    pwm_FrontServo.start(0)
+    pwm_UpDownServo.start(0)
+    pwm_LeftRightServo.start(0)
 
 
 # 小车前进
-@timeout_decorator.timeout(1)
 def run():
     GPIO.output(IN1, GPIO.HIGH)
     GPIO.output(IN2, GPIO.LOW)
@@ -233,6 +256,14 @@ def whistle():
     GPIO.output(buzzer, GPIO.HIGH)
     time.sleep(0.001)
 
+# 前舵机旋转到指定角度
+def frontservo_appointed_detection(pos):
+    pos = int(pos)
+    for i in range(18):
+        pwm_FrontServo.ChangeDutyCycle(2.5 + 10 * pos / 180)
+        time.sleep(0.02)  # 等待20ms周期结束
+    # pwm_FrontServo.ChangeDutyCycle(0)	#归零信号
+
 ################################################################ 需要为客户端提供服务
 def do_service(connect_socket):
     while True:
@@ -260,6 +291,9 @@ def do_service(connect_socket):
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'x'):
             with eventlet.Timeout(1, False):
                 brake()
+        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'y'):
+            with eventlet.Timeout(1, False):
+                frontservo_appointed_detection(20)
         # # else:
         # wiringpi.digitalWrite(0,0)
         # if len(recv_data) > 1:
