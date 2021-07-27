@@ -125,6 +125,7 @@ def init():
     pwm_UpDownServo.start(0)
     pwm_LeftRightServo.start(0)
 
+
 # 小车前进
 def run():
     GPIO.output(IN1, GPIO.HIGH)
@@ -211,44 +212,52 @@ def frontservo_appointed_detection(pos):
     time.sleep(pulsewidth / 1000000.0)
     GPIO.output(FrontServoPin, GPIO.LOW)
     time.sleep(20.0 / 1000 - pulsewidth / 1000000.0)
-        # time.sleep(0.02)
+    # time.sleep(0.02)
     # for i in range(18):
     #     pwm_FrontServo.start(2.5 + 10 * pos / 180)
     #     time.sleep(0.02)  # 等待20ms周期结束
     #     # pwm_FrontServo.ChangeDutyCycle(0)  # 归零信号
 
+
 # 前舵机向左
 def front_servo0():
     for i in range(18):
-        frontservo_appointed_detection(180)
+        frontservo_appointed_detection(0)
         time.sleep(0.02)
+
 
 def front_servo45():
     for i in range(18):
-        frontservo_appointed_detection(180)
+        frontservo_appointed_detection(45)
         time.sleep(0.02)
+
 
 def front_servo90():
     for i in range(18):
-        frontservo_appointed_detection(180)
+        frontservo_appointed_detection(90)
         time.sleep(0.02)
+
 
 def front_servo135():
     for i in range(18):
-        frontservo_appointed_detection(0)
+        frontservo_appointed_detection(135)
         time.sleep(0.02)
+
 
 def front_servo180():
     for i in range(18):
-        frontservo_appointed_detection(0)
+        frontservo_appointed_detection(180)
         time.sleep(0.02)
 
     # 摄像头舵机左右旋转到指定角度
+
+
 def leftrightservo_appointed_detection(pos):
     for i in range(18):
         pwm_LeftRightServo.ChangeDutyCycle(2.5 + 10 * pos / 180)
         time.sleep(0.2)  # 等待20ms周期结束
         # pwm_LeftRightServo.ChangeDutyCycle(0)	#归零信号
+
 
 # 摄像头舵机上下旋转到指定角度
 def updownservo_appointed_detection(pos):
@@ -256,6 +265,7 @@ def updownservo_appointed_detection(pos):
         pwm_UpDownServo.ChangeDutyCycle(2.5 + 10 * pos / 180)
         time.sleep(0.2)  # 等待20ms周期结束
         # pwm_UpDownServo.ChangeDutyCycle(0)	#归零信号
+
 
 def servo_init():
     servoflag = 0
@@ -308,7 +318,7 @@ def do_service(connect_socket):
                 front_servo0()
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'u'):
             with eventlet.Timeout(1, False):
-               front_servo45()
+                front_servo45()
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'i'):
             with eventlet.Timeout(1, False):
                 front_servo90()
