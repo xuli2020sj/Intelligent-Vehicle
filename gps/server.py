@@ -24,7 +24,7 @@ def main():
     listen_socket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 
     # 2.绑定端口
-    my_addr = ('192.168.146.1', 7777)
+    my_addr = ('192.168.146.1', 7788)
     listen_socket.bind(my_addr)
 
     # 3，接听状态
