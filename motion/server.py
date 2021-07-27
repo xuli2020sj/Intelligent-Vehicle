@@ -206,12 +206,13 @@ def whistle():
 
 # 前舵机旋转到指定角度
 def frontservo_appointed_detection(pos):
-    pulsewidth = (pos * 11) + 500
-    GPIO.output(FrontServoPin, GPIO.HIGH)
-    time.sleep(pulsewidth / 1000000.0)
-    GPIO.output(FrontServoPin, GPIO.LOW)
-    time.sleep(20.0 / 1000 - pulsewidth / 1000000.0)
-    pos = int(pos)
+    for i in range(18):
+        pulsewidth = (pos * 11) + 500
+        GPIO.output(FrontServoPin, GPIO.HIGH)
+        time.sleep(pulsewidth / 1000000.0)
+        GPIO.output(FrontServoPin, GPIO.LOW)
+        time.sleep(20.0 / 1000 - pulsewidth / 1000000.0)
+        time.sleep(0.02)
     # for i in range(18):
     #     pwm_FrontServo.start(2.5 + 10 * pos / 180)
     #     time.sleep(0.02)  # 等待20ms周期结束
@@ -291,18 +292,15 @@ def do_service(connect_socket):
             with eventlet.Timeout(1, False):
                 spin_left()
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'y'):
-            front_servo_left()
-            GPIO.output(LED_R, GPIO.LOW)
-            GPIO.output(LED_G, GPIO.LOW)
-            GPIO.output(LED_B, GPIO.HIGH)
-            whistle()
+            frontservo_appointed_detection(0)
+        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'u'):
+            frontservo_appointed_detection(45)
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'i'):
-            front_servo_right()
-            GPIO.output(LED_R, GPIO.HIGH)
-            GPIO.output(LED_G, GPIO.LOW)
-            GPIO.output(LED_B, GPIO.LOW)
+            frontservo_appointed_detection(90)
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'o'):
-            updownservo_appointed_detection(50)
+            frontservo_appointed_detection(135)
+        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'p'):
+            frontservo_appointed_detection(180)
         # # else:
         # wiringpi.digitalWrite(0,0)
         # if len(recv_data) > 1:
