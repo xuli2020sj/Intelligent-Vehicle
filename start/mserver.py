@@ -453,29 +453,6 @@ def auto():
             time.sleep(2)
             brake()
 
-#
-def whistle():
-    GPIO.output(buzzer, GPIO.LOW)
-    time.sleep(0.1)
-    GPIO.output(buzzer, GPIO.HIGH)
-    time.sleep(0.001)
-
-
-# 前舵机旋转到指定角度
-def frontservo_appointed_detection(pos):
-    pulsewidth = (pos * 11) + 500
-    GPIO.output(FrontServoPin, GPIO.HIGH)
-    time.sleep(pulsewidth / 1000000.0)
-    GPIO.output(FrontServoPin, GPIO.LOW)
-    time.sleep(20.0 / 1000 - pulsewidth / 1000000.0)
-    global nowfrontPos
-    nowfrontPos = pos
-    # time.sleep(0.02)
-    # for i in range(18):
-    #     pwm_FrontServo.start(2.5 + 10 * pos / 180)
-    #     time.sleep(0.02)  # 等待20ms周期结束
-    #     # pwm_FrontServo.ChangeDutyCycle(0)  # 归零信号
-
 
 # 前舵机向左
 def front_servo0():
@@ -509,33 +486,6 @@ def front_servo180():
 
     # 摄像头舵机左右旋转到指定角度
 
-
-def leftrightservo_appointed_detection(pos):
-    for i in range(18):
-        pwm_LeftRightServo.ChangeDutyCycle(2.5 + 10 * pos / 180)
-        time.sleep(0.2)  # 等待20ms周期结束
-        # pwm_LeftRightServo.ChangeDutyCycle(0)	#归零信号
-
-
-# 摄像头舵机上下旋转到指定角度
-def updownservo_appointed_detection(pos):
-    for i in range(18):
-        pwm_UpDownServo.ChangeDutyCycle(2.5 + 10 * pos / 180)
-        time.sleep(0.2)  # 等待20ms周期结束
-        # pwm_UpDownServo.ChangeDutyCycle(0)	#归零信号
-
-
-def servo_init():
-    servoflag = 0
-    servoinitpos = 90
-    if servoflag != servoinitpos:
-        frontservo_appointed_detection(servoinitpos)
-        updownservo_appointed_detection(servoinitpos)
-        leftrightservo_appointed_detection(servoinitpos)
-        time.sleep(0.5)
-        pwm_FrontServo.ChangeDutyCycle(0)  # 归零信号
-        pwm_LeftRightServo.ChangeDutyCycle(0)  # 归零信号
-        pwm_UpDownServo.ChangeDutyCycle(0)  # 归零信号
 
 
 ################################################################ 需要为客户端提供服务
@@ -588,7 +538,7 @@ def do_service(connect_socket):
                 front_servo180()
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'n'):
             with eventlet.Timeout(1, False):
-                front_servo180()
+                auto()
         # # else:
         # wiringpi.digitalWrite(0,0)
         # if len(recv_data) > 1:
