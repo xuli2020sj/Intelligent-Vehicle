@@ -47,7 +47,7 @@ def main():
 
     while True:
         # 发送消息
-        msg = '' + tcam()
+        msg = str(int(tcam()))
         # 编码发送
         mySocket.send(msg.encode("utf-8"))
         print("发送完成")
