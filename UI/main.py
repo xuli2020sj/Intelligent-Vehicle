@@ -9,7 +9,7 @@ import PyQt5
 import numpy
 import numpy as np
 from PyQt5 import QtCore, QtWidgets, QtGui
-from PyQt5.QtCore import QCoreApplication, QUrl, pyqtSignal, QObject, QThread, pyqtSlot, Qt
+from PyQt5.QtCore import QCoreApplication, QUrl, pyqtSignal, QObject, QThread, pyqtSlot, Qt, QTimer
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QMessageBox, QWidget
@@ -31,6 +31,7 @@ IN4 = 26
 ENA = 16
 ENB = 13
 CarSpeedControl = 1000
+temperature = 30
 
 # 加载qt文件
 Ui_MainWindow = loadUiType("main.ui")[0]
@@ -128,6 +129,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.tcpthread = TcpThread()  # 实例化任务线程类
         self.connect.clicked.connect(self.TcpStart)
 
+        self.tcamthread = thermalCamThread()  # 实例化任务线程类
+        self.connect.clicked.connect(self.TcaStart)
+
+        time = QTimer(self)
+        time.setInterval(500)
+        time.timeout.connect(self.refresh)
+        time.start()
+        self.tlcd.display(25)
+
+        self.jdlcd.display(121.447477)
+        self.wdlcd.display(31.025758)
+
+    def refresh(self):
+        self.ttlcd.display(temperature)
+
     def forwardc(self):
         self.motionSin.emit("w")
 
@@ -163,7 +179,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     # 启动TCP
     def TcpStart(self):
         self.tcpthread.start()
-        pass
+
+    def TcaStart(self):
+        self.tcamthread.start()
 
     # 状态信息显示
     def startText(self):
@@ -216,6 +234,7 @@ class CamThread(QThread):  # 建立一个任务线程类
     def __init__(self):
         super(CamThread, self).__init__()
 
+
     def run(self):  # 在启动线程后任务从这个函数里面开始执行
         HOST = '192.168.146.1'
         PORT = 9999
@@ -255,33 +274,20 @@ class thermalCamThread(QThread):  # 建立一个任务线程类
 
     def run(self):  # 在启动线程后任务从这个函数里面开始执行
         HOST = '192.168.146.1'
-        PORT = 9999
+        PORT = 7777
         buffSize = 65535
 
         server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # 创建socket对象
         server.bind((HOST, PORT))
-        print('now waiting for frames...')
+        print('now waiting for data...')
         while True:
             data, address = server.recvfrom(buffSize)  # 先接收的是字节长度
-            if len(data) == 1 and data[0] == 1:  # 如果收到关闭消息则停止程序
-                server.close()
-                cv2.destroyAllWindows()
-                exit()
-            if len(data) != 4:  # 进行简单的校验，长度值是int类型，占四个字节
-                length = 0
-            else:
-                length = struct.unpack('i', data)[0]  # 长度值
-            data, address = server.recvfrom(buffSize)  # 接收编码图像数据
-            if length != len(data):  # 进行简单的校验
-                continue
-            data = numpy.array(bytearray(data))  # 格式转换
-            imgdecode = cv2.imdecode(data, 1)  # 解码
-            print('have received one frame')
-            cv2.imshow('frames', imgdecode)  # 窗口显示
-            if cv2.waitKey(1) == 27:  # 按下“ESC”退出
+            print(data)
+
+            if data == 27:  # 按下“ESC”退出
                 break
         server.close()
-        cv2.destroyAllWindows()
+
 
 
 class TcpThread(QThread):  # 建立一个任务线程类
@@ -314,10 +320,10 @@ class TcpThread(QThread):  # 建立一个任务线程类
                 break
             # # 向服务器请求数据
             # client_socket.send(send_data.encode())
-            if self.mesg != mesg2 :
+            if self.mesg != mesg2:
                 client_socket.send(self.mesg.encode())
                 time.sleep(0.1)
-                mesg2=self.mesg
+                mesg2 = self.mesg
 
         client_socket.close()
 

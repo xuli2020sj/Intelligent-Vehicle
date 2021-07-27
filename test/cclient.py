@@ -1,29 +1,33 @@
 import socket
 import time
 
+print("客户端开启")
+# 套接字接口
+mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# 设置ip和端口
+host = '192.168.146.1'
+port = 2222
 
-def main():
-    # 1.创建socket
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+try:
+    mySocket.connect((host, port))  ##连接到服务器
+    print("连接到服务器")
+except:  ##连接不成功，运行最初的ip
+    print('连接不成功')
 
-    # 2.指定服务器的地址和端口号
-    server_addr = ('192.168.146.1', 7777)
-    client_socket.connect(server_addr)
+while True:
+    # 发送消息
+    msg = '9'
+    # 编码发送
+    mySocket.send(msg.encode("utf-8"))
+    print("发送完成")
 
-    print('connect %s success' % str(server_addr))
+    time.sleep(10)
 
-    while True:
-
-        send_data = "fuck"
-        print(send_data)
-        if send_data == 'quit':
-            break
-        # 向服务器请求数据
-        client_socket.send(send_data.encode())
-        time.sleep(0.5)
-
-    client_socket.close()
+    if msg == "over":
+        mySocket.close()
+        print("程序结束\n")
+        exit()
+        break
+print("程序结束\n")
 
 
-if __name__ == "__main__":
-    main()
