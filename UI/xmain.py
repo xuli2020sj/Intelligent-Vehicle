@@ -250,34 +250,40 @@ class thermalCamThread(QThread):  # 建立一个任务线程类
         super(thermalCamThread, self).__init__()
 
     def run(self):  # 在启动线程后任务从这个函数里面开始执行
-        HOST = '192.168.3.18'
-        PORT = 9999
-        buffSize = 65535
+        print("data服务端开启")
+        # 套接字接口
+        mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        # 设置IP和端口
+        host = '192.168.146.1'
+        port = 4444
+        # bind绑定该端口
+        mySocket.bind((host, port))
+        mySocket.listen(10)
 
-        server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # 创建socket对象
-        server.bind((HOST, PORT))
-        print('now waiting for frames...')
         while True:
-            data, address = server.recvfrom(buffSize)  # 先接收的是字节长度
-            if len(data) == 1 and data[0] == 1:  # 如果收到关闭消息则停止程序
-                server.close()
-                cv2.destroyAllWindows()
-                exit()
-            if len(data) != 4:  # 进行简单的校验，长度值是int类型，占四个字节
-                length = 0
-            else:
-                length = struct.unpack('i', data)[0]  # 长度值
-            data, address = server.recvfrom(buffSize)  # 接收编码图像数据
-            if length != len(data):  # 进行简单的校验
-                continue
-            data = numpy.array(bytearray(data))  # 格式转换
-            imgdecode = cv2.imdecode(data, 1)  # 解码
-            print('have received one frame')
-            cv2.imshow('frames', imgdecode)  # 窗口显示
-            if cv2.waitKey(1) == 27:  # 按下“ESC”退出
-                break
-        server.close()
-        cv2.destroyAllWindows()
+            # 接收客户端连接
+            print("等待连接....")
+            client, address = mySocket.accept()
+            print("新连接")
+            print("IP is %s" % address[0])
+            print("port is %d\n" % address[1])
+            while True:
+                # 读取消息
+                msg = client.recv(1024)
+                # 把接收到的数据进行解码
+                print(msg.decode("utf-8"))
+                print("读取完成")
+
+                time.sleep(0.4)
+
+                if msg == "over":
+                    client.close()
+                    mySocket.close()
+                    break
+                    # 关闭数据库连接
+
+                    print("程序结束\n")
+                    exit()
 
 
 class TcpThread(QThread):  # 建立一个任务线程类

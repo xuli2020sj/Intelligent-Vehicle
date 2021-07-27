@@ -269,24 +269,47 @@ class CamThread(QThread):  # 建立一个任务线程类
 class thermalCamThread(QThread):  # 建立一个任务线程类
     signal = pyqtSignal(str)  # 设置触发信号传递的参数数据类型,这里是字符串
 
+
     def __init__(self):
         super(thermalCamThread, self).__init__()
 
+
     def run(self):  # 在启动线程后任务从这个函数里面开始执行
-        HOST = '192.168.146.1'
-        PORT = 7777
-        buffSize = 65535
+        global temperature
+        print("服务端开启")
+        # 套接字接口
+        mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        # 设置IP和端口
+        host = '192.168.146.1'
+        port = 4444
+        # bind绑定该端口
+        mySocket.bind((host, port))
+        mySocket.listen(10)
 
-        server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # 创建socket对象
-        server.bind((HOST, PORT))
-        print('now waiting for data...')
         while True:
-            data, address = server.recvfrom(buffSize)  # 先接收的是字节长度
-            print(data)
+            # 接收客户端连接
+            print("等待连接....")
+            client, address = mySocket.accept()
+            print("新连接")
+            print("IP is %s" % address[0])
+            print("port is %d\n" % address[1])
+            while True:
+                # 读取消息
+                msg = client.recv(1024)
+                # 把接收到的数据进行解码
+                # print(msg.decode("utf-8"))
+                # print("读取完成")
+                temperature = int(msg.decode("utf-8"))
+                time.sleep(0.4)
 
-            if data == 27:  # 按下“ESC”退出
-                break
-        server.close()
+                if msg == "over":
+                    client.close()
+                    mySocket.close()
+                    break
+                    # 关闭数据库连接
+
+                    print("程序结束\n")
+                    # exit()
 
 
 
