@@ -64,7 +64,7 @@ ReturnTemp = ''
 g_CarState = 0
 g_ServoState = 0
 # 小车速度变量
-CarSpeedControl = 100
+CarSpeedControl = 50
 # 寻迹，避障，寻光变量
 infrared_track_value = ''
 infrared_avoid_value = ''
@@ -180,8 +180,8 @@ def run():
     GPIO.output(IN3, GPIO.HIGH)
     GPIO.output(IN4, GPIO.LOW)
     # 启动PWM设置占空比为100（0--100）
-    # pwm_ENA.start(100)
-    # pwm_ENB.start(100)
+    pwm_ENA.start(100)
+    pwm_ENB.start(100)
     pwm_ENA.ChangeDutyCycle(CarSpeedControl)
     pwm_ENB.ChangeDutyCycle(CarSpeedControl)
 
