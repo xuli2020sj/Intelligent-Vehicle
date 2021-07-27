@@ -13,9 +13,10 @@ while True:
     my_nparray = np.frombuffer(temp, dtype=np.float32)
 
     t = my_nparray.reshape((32, 24))
-    print(t)
+
     print(t.max)
-    time.sleep(1/24)
+    print(t.index(max(t)))
+    time.sleep(1/2)
 # for i in range(len(temp)):
 #     if i % 32 == 0 and i != 0:
 #         print("\r\n")
