@@ -206,27 +206,39 @@ def whistle():
 
 # 前舵机旋转到指定角度
 def frontservo_appointed_detection(pos):
-    for i in range(18):
-        pulsewidth = (pos * 11) + 500
-        GPIO.output(FrontServoPin, GPIO.HIGH)
-        time.sleep(pulsewidth / 1000000.0)
-        GPIO.output(FrontServoPin, GPIO.LOW)
-        time.sleep(20.0 / 1000 - pulsewidth / 1000000.0)
-        time.sleep(0.02)
+    pulsewidth = (pos * 11) + 500
+    GPIO.output(FrontServoPin, GPIO.HIGH)
+    time.sleep(pulsewidth / 1000000.0)
+    GPIO.output(FrontServoPin, GPIO.LOW)
+    time.sleep(20.0 / 1000 - pulsewidth / 1000000.0)
+        # time.sleep(0.02)
     # for i in range(18):
     #     pwm_FrontServo.start(2.5 + 10 * pos / 180)
     #     time.sleep(0.02)  # 等待20ms周期结束
     #     # pwm_FrontServo.ChangeDutyCycle(0)  # 归零信号
 
 # 前舵机向左
-def front_servo_left():
+def front_servo0():
     for i in range(18):
         frontservo_appointed_detection(180)
         time.sleep(0.02)
 
+def front_servo45():
+    for i in range(18):
+        frontservo_appointed_detection(180)
+        time.sleep(0.02)
 
-# 前舵机向右
-def front_servo_right():
+def front_servo90():
+    for i in range(18):
+        frontservo_appointed_detection(180)
+        time.sleep(0.02)
+
+def front_servo135():
+    for i in range(18):
+        frontservo_appointed_detection(0)
+        time.sleep(0.02)
+
+def front_servo180():
     for i in range(18):
         frontservo_appointed_detection(0)
         time.sleep(0.02)
@@ -292,15 +304,15 @@ def do_service(connect_socket):
             with eventlet.Timeout(1, False):
                 spin_left()
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'y'):
-            frontservo_appointed_detection(0)
+            front_servo0()
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'u'):
-            frontservo_appointed_detection(45)
+            front_servo45()
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'i'):
-            frontservo_appointed_detection(90)
+            front_servo90()
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'o'):
-            frontservo_appointed_detection(135)
+            front_servo135()
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'p'):
-            frontservo_appointed_detection(180)
+            front_servo180()
         # # else:
         # wiringpi.digitalWrite(0,0)
         # if len(recv_data) > 1:
