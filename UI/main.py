@@ -113,9 +113,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.stop.clicked.connect(self.stopText)
         self.stop.clicked.connect(self.stopc)
 
-        self.stat.setShortcut('n')
-        self.stat.clicked.connect(self.statText)
-        self.stat.clicked.connect(self.statc)
+        self.start.setShortcut('n')
+        self.start.clicked.connect(self.startText)
+        self.start.clicked.connect(self.startc)
 
         self.motionSin.connect(self.ccmd)
 
@@ -300,7 +300,7 @@ class TcpThread(QThread):  # 建立一个任务线程类
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         # 2.指定服务器的地址和端口号
-        server_addr = ('192.168.146.53', 8888)
+        server_addr = ('192.168.146.205', 8888)
         client_socket.connect(server_addr)
 
         print('connect %s success' % str(server_addr))
