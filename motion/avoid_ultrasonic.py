@@ -1,16 +1,6 @@
-from multiprocessing import Process
-from socket import *
-# import wiringpi
-
+# -*- coding:UTF-8 -*-
 import RPi.GPIO as GPIO
 import time
-import string
-import threading
-import timeout_decorator
-import eventlet
-import time
-
-eventlet.monkey_patch()
 
 # 小车电机引脚定义
 IN1 = 20
@@ -229,100 +219,60 @@ def servo_color_carstate():
         time.sleep(0.28)
 
 
-################################################################ 需要为客户端提供服务
-def do_service(connect_socket):
-    while True:
-        recv_data = connect_socket.recv(1024)
-        if len(recv_data) == 0:
-            # 发送方关闭tcp的连接,recv()不会阻塞，而是直接返回''
-            # print('client %s close' % str(client_addr))
-            # s.getpeername()   s.getsockname()
-            # wiringpi.digitalWrite(0,0)
-            print('client %s close' % str(connect_socket.getpeername()))
-            break
+# 延时2s
+time.sleep(2)
 
-        if (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'w'):
-            # with eventlet.Timeout(0.1, False):
-                run(100, 100)
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 's'):
-            with eventlet.Timeout(0.1, False):
-                back(100, 100)
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'a'):
-            with eventlet.Timeout(0.1, False):
-                left(100, 100)
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'd'):
-            with eventlet.Timeout(0.1, False):
-                right(100, 100)
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'x'):
-            with eventlet.Timeout(0.1, False):
-                brake()
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'e'):
-            with eventlet.Timeout(0.1, False):
-                spin_right(100, 100)
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'q'):
-            with eventlet.Timeout(0.1, False):
-                spin_left(100, 100)
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'y'):
-            with eventlet.Timeout(0.1, False):
-                servo_appointed_detection(0)
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'u'):
-            with eventlet.Timeout(0.1, False):
-                servo_appointed_detection(45)
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'i'):
-            with eventlet.Timeout(0.1, False):
-                servo_appointed_detection(90)
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'o'):
-            with eventlet.Timeout(0.1, False):
-                servo_appointed_detection(135)
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'p'):
-            with eventlet.Timeout(0.1, False):
-                servo_appointed_detection(180)
-        # # else:
-        # wiringpi.digitalWrite(0,0)
-        # if len(recv_data) > 1:
-        # wiringpi.digitalWrite(0,0)
-
-        print('recv: %s' % recv_data.decode('gbk'))
-
-
-def main():
+# try/except语句用来检测try语句块中的错误，
+# 从而让except语句捕获异常信息并处理。
+try:
     init()
-    # 0.init wiringpi
-    # wiringpi.wiringPiSetup()
-    # wiringpi.pinMode(0,1)
-    # 1.创建socket
-    listen_socket = socket(AF_INET, SOCK_STREAM)
-    # stream流式套接字,对应tcp
-
-    # 设置允许复用地址,当建立连接之后服务器先关闭，设置地址复用
-    # 设置socket层属性    复用地址，不用等2msl，    允许
-    listen_socket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-
-    # 2.绑定端口
-    my_addr = ('192.168.3.24', 8888)
-    listen_socket.bind(my_addr)
-
-    # 3，接听状态
-    listen_socket.listen(4)  # 设置套接字成监听,4表示一个己连接队列长度
-    print('listening...')
-
-    # 4.等待客户端来请求
-
-    # 父进程只专注接受连接请求
+    key_scan()
     while True:
-        # 接受连接请求，创建连接套接字，用于客户端间通信
-        connect_socket, client_addr = listen_socket.accept()  # accept默认会引起阻塞
-        # 新创建连接用的socket, 客户端的地址
-        # print(connect_socket)
-        print(client_addr)
+        distance = Distance_test()
+        if distance > 50:
+            # 遇到障碍物,红外避障模块的指示灯亮,端口电平为LOW
+            # 未遇到障碍物,红外避障模块的指示灯灭,端口电平为HIGH
+            LeftSensorValue = GPIO.input(AvoidSensorLeft)
+            RightSensorValue = GPIO.input(AvoidSensorRight)
 
-        # 每当来新的客户端连接，创建子进程，由子进程和客户端通信
-        process_do_service = Process(target=do_service, args=(connect_socket,))
-        process_do_service.start()
+            if LeftSensorValue == True and RightSensorValue == True:
+                run(100, 100)  # 当两侧均未检测到障碍物时调用前进函数
+            elif LeftSensorValue == True and RightSensorValue == False:
+                spin_left(85, 85)  # 右边探测到有障碍物，有信号返回，原地向左转
+                time.sleep(0.002)
+            elif RightSensorValue == True and LeftSensorValue == False:
+                spin_right(85, 85)  # 左边探测到有障碍物，有信号返回，原地向右转
+                time.sleep(0.002)
+            elif RightSensorValue == False and LeftSensorValue == False:
+                spin_right(85, 85)  # 当两侧均检测到障碍物时调用固定方向的避障(原地右转)
+                time.sleep(0.002)
+                run(100, 100)
+                GPIO.output(LED_R, GPIO.LOW)
+                GPIO.output(LED_G, GPIO.HIGH)
+                GPIO.output(LED_B, GPIO.LOW)
+        elif 30 <= distance <= 50:
+            # 遇到障碍物,红外避障模块的指示灯亮,端口电平为LOW
+            # 未遇到障碍物,红外避障模块的指示灯灭,端口电平为HIGH
+            LeftSensorValue = GPIO.input(AvoidSensorLeft)
+            RightSensorValue = GPIO.input(AvoidSensorRight)
 
-        # 父进程，关闭connect_socket
-        connect_socket.close()
+            if LeftSensorValue == True and RightSensorValue == True:
+                run(100, 100)  # 当两侧均未检测到障碍物时调用前进函数
+            elif LeftSensorValue == True and RightSensorValue == False:
+                spin_left(85, 85)  # 右边探测到有障碍物，有信号返回，原地向左转
+                time.sleep(0.002)
+            elif RightSensorValue == True and LeftSensorValue == False:
+                spin_right(85, 85)  # 左边探测到有障碍物，有信号返回，原地向右转
+                time.sleep(0.002)
+            elif RightSensorValue == False and LeftSensorValue == False:
+                spin_right(85, 85)  # 当两侧均检测到障碍物时调用固定方向的避障(原地右转)
+                time.sleep(0.002)
+                run(60, 60)
+        elif distance < 30:
+            servo_color_carstate()
 
-
-if __name__ == "__main__":
-    main()
+except KeyboardInterrupt:
+    pass
+pwm_ENA.stop()
+pwm_ENB.stop()
+GPIO.cleanup()
