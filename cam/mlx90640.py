@@ -13,6 +13,9 @@ my_nparray = np.frombuffer(temp, dtype=np.float32)
 print(my_nparray)
 print(my_nparray.shape)
 print(my_nparray.max)
+t = my_nparray.reshape((32, 24))
+print(t)
+print(t.shape)
 # for i in range(len(temp)):
 #     if i % 32 == 0 and i != 0:
 #         print("\r\n")
