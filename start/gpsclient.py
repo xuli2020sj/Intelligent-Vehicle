@@ -6,6 +6,7 @@ from ctypes import *
 import numpy as np
 
 mlx90640 = cdll.LoadLibrary('./libmlx90640.so')
+serialPort = serial.Serial("/dev/ttyUSB0", 9600, timeout=0.5)
 
 def tcam():
     temp = (c_float * 768)()
@@ -19,7 +20,7 @@ def tcam():
     # print(np.argmax(t))
     return np.max(t)
 
-serialPort = serial.Serial("/dev/ttyUSB0", 9600, timeout=0.5)
+
 
 def parseGPS(s):
     if s.find('GGA') > -1:
