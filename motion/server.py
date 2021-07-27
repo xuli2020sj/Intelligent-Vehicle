@@ -235,7 +235,7 @@ def leftrightservo_appointed_detection(pos):
 
 # 摄像头舵机上下旋转到指定角度
 def updownservo_appointed_detection(pos):
-    for i in range(1):
+    for i in range(18):
         pwm_UpDownServo.ChangeDutyCycle(2.5 + 10 * pos / 180)
         time.sleep(0.02)  # 等待20ms周期结束
         # pwm_UpDownServo.ChangeDutyCycle(0)	#归零信号
