@@ -587,3 +587,5 @@ def main():
         # 父进程，关闭connect_socket
         connect_socket.close()
 
+if __name__ == '__main__':
+    main()
