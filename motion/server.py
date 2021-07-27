@@ -64,7 +64,7 @@ ReturnTemp = ''
 g_CarState = 0
 g_ServoState = 0
 # 小车速度变量
-CarSpeedControl = 50
+CarSpeedControl = 80
 # 寻迹，避障，寻光变量
 infrared_track_value = ''
 infrared_avoid_value = ''
@@ -85,93 +85,93 @@ eventlet.monkey_patch()
 
 # 电机引脚初始化操作
 def init():
-    # global pwm_ENA
-    # global pwm_ENB
-    # global delaytime
-    # global CarSpeedControl
-    # global pwm_FrontServo
-    # global pwm_UpDownServo
-    # global pwm_LeftRightServo
-    #
-    # GPIO.setup(ENA, GPIO.OUT, initial=GPIO.HIGH)
-    # GPIO.setup(IN1, GPIO.OUT, initial=GPIO.LOW)
-    # GPIO.setup(IN2, GPIO.OUT, initial=GPIO.LOW)
-    # GPIO.setup(ENB, GPIO.OUT, initial=GPIO.HIGH)
-    # GPIO.setup(IN3, GPIO.OUT, initial=GPIO.LOW)
-    # GPIO.setup(IN4, GPIO.OUT, initial=GPIO.LOW)
-    #
-    # GPIO.setup(EchoPin, GPIO.IN)
-    # GPIO.setup(TrigPin, GPIO.OUT)
-    #
-    # GPIO.setup(FrontServoPin, GPIO.OUT)
-    # pwm_FrontServo = GPIO.PWM(FrontServoPin, 50)
-    # pwm_FrontServo.start(0)
-    #
-    # GPIO.setup(ServoUpDownPin, GPIO.OUT)
-    # GPIO.setup(ServoLeftRightPin, GPIO.OUT)
-    # GPIO.setup(buzzer, GPIO.OUT, initial=GPIO.HIGH)
-    #
-    # GPIO.setup(LED_R, GPIO.OUT)
-    # GPIO.setup(LED_G, GPIO.OUT)
-    # GPIO.setup(LED_B, GPIO.OUT)
-    #
-    # # 设置pwm引脚和频率为2000hz
-    # pwm_ENA = GPIO.PWM(ENA, 2000)
-    # pwm_ENB = GPIO.PWM(ENB, 2000)
-    # # pwm_ENA.start(0)
-    # # pwm_ENB.start(0)
-    #
-    # pwm_FrontServo = GPIO.PWM(FrontServoPin, 50)
-    # pwm_UpDownServo = GPIO.PWM(ServoUpDownPin, 50)
-    # pwm_LeftRightServo = GPIO.PWM(ServoLeftRightPin, 50)
-    # pwm_FrontServo.start(0)
-    # pwm_UpDownServo.start(0)
-    # pwm_LeftRightServo.start(0)
     global pwm_ENA
     global pwm_ENB
+    global delaytime
+    global CarSpeedControl
     global pwm_FrontServo
     global pwm_UpDownServo
     global pwm_LeftRightServo
-    global pwm_rled
-    global pwm_gled
-    global pwm_bled
+
     GPIO.setup(ENA, GPIO.OUT, initial=GPIO.HIGH)
     GPIO.setup(IN1, GPIO.OUT, initial=GPIO.LOW)
     GPIO.setup(IN2, GPIO.OUT, initial=GPIO.LOW)
     GPIO.setup(ENB, GPIO.OUT, initial=GPIO.HIGH)
     GPIO.setup(IN3, GPIO.OUT, initial=GPIO.LOW)
     GPIO.setup(IN4, GPIO.OUT, initial=GPIO.LOW)
-    GPIO.setup(buzzer, GPIO.OUT, initial=GPIO.HIGH)
 
     GPIO.setup(EchoPin, GPIO.IN)
     GPIO.setup(TrigPin, GPIO.OUT)
+
+    GPIO.setup(FrontServoPin, GPIO.OUT)
+    pwm_FrontServo = GPIO.PWM(FrontServoPin, 50)
+    pwm_FrontServo.start(0)
+
+    GPIO.setup(ServoUpDownPin, GPIO.OUT)
+    GPIO.setup(ServoLeftRightPin, GPIO.OUT)
+    GPIO.setup(buzzer, GPIO.OUT, initial=GPIO.HIGH)
+
     GPIO.setup(LED_R, GPIO.OUT)
     GPIO.setup(LED_G, GPIO.OUT)
     GPIO.setup(LED_B, GPIO.OUT)
-    GPIO.setup(FrontServoPin, GPIO.OUT)
-    GPIO.setup(ServoUpDownPin, GPIO.OUT)
-    GPIO.setup(ServoLeftRightPin, GPIO.OUT)
-    GPIO.setup(AvoidSensorLeft, GPIO.IN)
-    GPIO.setup(AvoidSensorRight, GPIO.IN)
+
     # 设置pwm引脚和频率为2000hz
     pwm_ENA = GPIO.PWM(ENA, 2000)
     pwm_ENB = GPIO.PWM(ENB, 2000)
-    pwm_ENA.start(0)
-    pwm_ENB.start(0)
-    # 设置舵机的频率和起始占空比
+    # pwm_ENA.start(0)
+    # pwm_ENB.start(0)
+
     pwm_FrontServo = GPIO.PWM(FrontServoPin, 50)
-    pwm_FrontServo.start(0)
     pwm_UpDownServo = GPIO.PWM(ServoUpDownPin, 50)
     pwm_LeftRightServo = GPIO.PWM(ServoLeftRightPin, 50)
-
+    pwm_FrontServo.start(0)
     pwm_UpDownServo.start(0)
     pwm_LeftRightServo.start(0)
-    pwm_rled = GPIO.PWM(LED_R, 1000)
-    pwm_gled = GPIO.PWM(LED_G, 1000)
-    pwm_bled = GPIO.PWM(LED_B, 1000)
-    pwm_rled.start(0)
-    pwm_gled.start(0)
-    pwm_bled.start(0)
+    # global pwm_ENA
+    # global pwm_ENB
+    # global pwm_FrontServo
+    # global pwm_UpDownServo
+    # global pwm_LeftRightServo
+    # global pwm_rled
+    # global pwm_gled
+    # global pwm_bled
+    # GPIO.setup(ENA, GPIO.OUT, initial=GPIO.HIGH)
+    # GPIO.setup(IN1, GPIO.OUT, initial=GPIO.LOW)
+    # GPIO.setup(IN2, GPIO.OUT, initial=GPIO.LOW)
+    # GPIO.setup(ENB, GPIO.OUT, initial=GPIO.HIGH)
+    # GPIO.setup(IN3, GPIO.OUT, initial=GPIO.LOW)
+    # GPIO.setup(IN4, GPIO.OUT, initial=GPIO.LOW)
+    # GPIO.setup(buzzer, GPIO.OUT, initial=GPIO.HIGH)
+    #
+    # GPIO.setup(EchoPin, GPIO.IN)
+    # GPIO.setup(TrigPin, GPIO.OUT)
+    # GPIO.setup(LED_R, GPIO.OUT)
+    # GPIO.setup(LED_G, GPIO.OUT)
+    # GPIO.setup(LED_B, GPIO.OUT)
+    # GPIO.setup(FrontServoPin, GPIO.OUT)
+    # GPIO.setup(ServoUpDownPin, GPIO.OUT)
+    # GPIO.setup(ServoLeftRightPin, GPIO.OUT)
+    # GPIO.setup(AvoidSensorLeft, GPIO.IN)
+    # GPIO.setup(AvoidSensorRight, GPIO.IN)
+    # # 设置pwm引脚和频率为2000hz
+    # pwm_ENA = GPIO.PWM(ENA, 2000)
+    # pwm_ENB = GPIO.PWM(ENB, 2000)
+    # pwm_ENA.start(0)
+    # pwm_ENB.start(0)
+    # # 设置舵机的频率和起始占空比
+    # pwm_FrontServo = GPIO.PWM(FrontServoPin, 50)
+    # pwm_FrontServo.start(0)
+    # pwm_UpDownServo = GPIO.PWM(ServoUpDownPin, 50)
+    # pwm_LeftRightServo = GPIO.PWM(ServoLeftRightPin, 50)
+    #
+    # pwm_UpDownServo.start(0)
+    # pwm_LeftRightServo.start(0)
+    # pwm_rled = GPIO.PWM(LED_R, 1000)
+    # pwm_gled = GPIO.PWM(LED_G, 1000)
+    # pwm_bled = GPIO.PWM(LED_B, 1000)
+    # pwm_rled.start(0)
+    # pwm_gled.start(0)
+    # pwm_bled.start(0)
 
 # 小车前进
 def run():
@@ -182,8 +182,8 @@ def run():
     # 启动PWM设置占空比为100（0--100）
     pwm_ENA.start(100)
     pwm_ENB.start(100)
-    pwm_ENA.ChangeDutyCycle(CarSpeedControl)
-    pwm_ENB.ChangeDutyCycle(CarSpeedControl)
+    # pwm_ENA.ChangeDutyCycle(CarSpeedControl)
+    # pwm_ENB.ChangeDutyCycle(CarSpeedControl)
 
 
 # 小车后退
