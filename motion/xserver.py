@@ -287,7 +287,6 @@ def do_service(connect_socket):
 
 def main():
     init()
-    servo_init()
     # 0.init wiringpi
     # wiringpi.wiringPiSetup()
     # wiringpi.pinMode(0,1)
