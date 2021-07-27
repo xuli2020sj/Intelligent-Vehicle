@@ -6,7 +6,7 @@ print("服务端开启")
 mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # 设置IP和端口
 host = '192.168.146.1'
-port = 2222
+port = 2223
 # bind绑定该端口
 mySocket.bind((host, port))
 mySocket.listen(10)

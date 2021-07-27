@@ -37,7 +37,7 @@ def main():
     mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # 设置ip和端口
     host = '192.168.146.1'
-    port = 2222
+    port = 2223
 
     try:
         mySocket.connect((host, port))  ##连接到服务器
