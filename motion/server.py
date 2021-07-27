@@ -304,15 +304,20 @@ def do_service(connect_socket):
             with eventlet.Timeout(1, False):
                 spin_left()
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'y'):
-            front_servo0()
+            with eventlet.Timeout(1, False):
+                front_servo0()
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'u'):
-            front_servo45()
+            with eventlet.Timeout(1, False):
+               front_servo45()
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'i'):
-            front_servo90()
+            with eventlet.Timeout(1, False):
+                front_servo90()
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'o'):
-            front_servo135()
+            with eventlet.Timeout(1, False):
+                front_servo135()
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'p'):
-            front_servo180()
+            with eventlet.Timeout(1, False):
+                front_servo180()
         # # else:
         # wiringpi.digitalWrite(0,0)
         # if len(recv_data) > 1:
