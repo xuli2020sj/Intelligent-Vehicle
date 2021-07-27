@@ -9,7 +9,7 @@ PORT=9999
 server=socket.socket(socket.AF_INET,socket.SOCK_DGRAM) #socket对象
 server.connect((HOST,PORT))
 print('now starting to send frames...')
-capture=cv2.VideoCapture(0) #VideoCapture对象，可获取摄像头设备的数据
+capture=cv2.VideoCapture(0) #VideoCapture对象，可获取摄像头设备的c数据
 try:
     while True:
         success,frame=capture.read()
