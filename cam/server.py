@@ -4,7 +4,7 @@ import numpy
 import socket
 import struct
 
-HOST='192.168.3.18'
+HOST='192.168.146.107'
 PORT=9999
 buffSize=65535
 

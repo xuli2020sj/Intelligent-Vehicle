@@ -37,3 +37,4 @@ def tcam():
 if __name__ == '__main__':
     wd, co = tcam()
     print(wd, co)
+
