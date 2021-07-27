@@ -250,6 +250,7 @@ def run():
     # 启动PWM设置占空比为100（0--100）
     pwm_ENA.start(CarSpeedControl)
     pwm_ENB.start(CarSpeedControl)
+    print('runrun')
     # pwm_ENA.ChangeDutyCycle(CarSpeedControl)
     # pwm_ENB.ChangeDutyCycle(CarSpeedControl)
 
