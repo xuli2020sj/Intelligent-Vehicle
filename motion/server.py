@@ -108,6 +108,10 @@ def init():
     GPIO.setup(ServoUpDownPin, GPIO.OUT)
     GPIO.setup(ServoLeftRightPin, GPIO.OUT)
 
+    GPIO.setup(LED_R, GPIO.OUT)
+    GPIO.setup(LED_G, GPIO.OUT)
+    GPIO.setup(LED_B, GPIO.OUT)
+
     # 设置pwm引脚和频率为2000hz
     pwm_ENA = GPIO.PWM(ENA, 2000)
     pwm_ENB = GPIO.PWM(ENB, 2000)
