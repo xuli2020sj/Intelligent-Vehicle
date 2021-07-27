@@ -121,7 +121,10 @@ def init():
     # pwm_ENA.start(0)
     # pwm_ENB.start(0)
 
-
+    # pwm_UpDownServo = GPIO.PWM(ServoUpDownPin, 50)
+    # pwm_LeftRightServo = GPIO.PWM(ServoLeftRightPin, 50)
+    # pwm_UpDownServo.start(0)
+    # pwm_LeftRightServo.start(0)
     # global pwm_ENA
     # global pwm_ENB
     # global pwm_FrontServo
@@ -177,8 +180,8 @@ def run():
     # 启动PWM设置占空比为100（0--100）
     pwm_ENA.start(100)
     pwm_ENB.start(100)
-    # pwm_ENA.ChangeDutyCycle(CarSpeedControl)
-    # pwm_ENB.ChangeDutyCycle(CarSpeedControl)
+    pwm_ENA.ChangeDutyCycle(CarSpeedControl)
+    pwm_ENB.ChangeDutyCycle(CarSpeedControl)
 
 
 # 小车后退
