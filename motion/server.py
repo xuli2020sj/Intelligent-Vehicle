@@ -286,6 +286,18 @@ def updownservo_appointed_detection(pos):
         time.sleep(0.02)  # 等待20ms周期结束
         # pwm_UpDownServo.ChangeDutyCycle(0)	#归零信号
 
+def servo_init():
+    servoflag = 0
+    servoinitpos = 90
+    if servoflag != servoinitpos:
+        frontservo_appointed_detection(servoinitpos)
+        updownservo_appointed_detection(servoinitpos)
+        leftrightservo_appointed_detection(servoinitpos)
+        time.sleep(0.5)
+        pwm_FrontServo.ChangeDutyCycle(0)  # 归零信号
+        pwm_LeftRightServo.ChangeDutyCycle(0)  # 归零信号
+        pwm_UpDownServo.ChangeDutyCycle(0)  # 归零信号
+
 
 ################################################################ 需要为客户端提供服务
 def do_service(connect_socket):
@@ -343,6 +355,7 @@ def do_service(connect_socket):
 
 def main():
     init()
+    servo_init()
     # 0.init wiringpi
     # wiringpi.wiringPiSetup()
     # wiringpi.pinMode(0,1)
