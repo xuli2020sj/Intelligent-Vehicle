@@ -328,9 +328,6 @@ def do_service(connect_socket):
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'p'):
             with eventlet.Timeout(1, False):
                 front_servo180()
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'p'):
-            with eventlet.Timeout(1, False):
-
         # # else:
         # wiringpi.digitalWrite(0,0)
         # if len(recv_data) > 1:
