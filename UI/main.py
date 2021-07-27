@@ -121,8 +121,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # self.label_show_camera = QtWidgets.QLabel()  # 定义显示视频的Label
         # self.label_show_camera.setFixedSize(641, 481)  # 给显示视频的Label设置大小为641x481
 
-        # self.camthread = CamThread()  # 实例化任务线程类
-        # self.connect.clicked.connect(self.camStart)
+        self.camthread = CamThread()  # 实例化任务线程类
+        self.connect.clicked.connect(self.camStart)
 
         self.tcpthread = TcpThread()  # 实例化任务线程类
         self.connect.clicked.connect(self.TcpStart)
@@ -213,7 +213,7 @@ class CamThread(QThread):  # 建立一个任务线程类
         super(CamThread, self).__init__()
 
     def run(self):  # 在启动线程后任务从这个函数里面开始执行
-        HOST = '192.168.3.24'
+        HOST = '192.168.146.1'
         PORT = 9999
         buffSize = 65535
 
@@ -250,7 +250,7 @@ class thermalCamThread(QThread):  # 建立一个任务线程类
         super(thermalCamThread, self).__init__()
 
     def run(self):  # 在启动线程后任务从这个函数里面开始执行
-        HOST = '192.168.3.18'
+        HOST = '192.168.146.1'
         PORT = 9999
         buffSize = 65535
 
@@ -296,7 +296,7 @@ class TcpThread(QThread):  # 建立一个任务线程类
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         # 2.指定服务器的地址和端口号
-        server_addr = ('192.168.126.250', 8888)
+        server_addr = ('192.168.146.107', 8888)
         client_socket.connect(server_addr)
 
         print('connect %s success' % str(server_addr))
