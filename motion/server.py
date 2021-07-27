@@ -157,7 +157,11 @@ def init():
 
     GPIO.setup(EchoPin, GPIO.IN)
     GPIO.setup(TrigPin, GPIO.OUT)
+
     GPIO.setup(FrontServoPin, GPIO.OUT)
+    pwm_FrontServo = GPIO.PWM(FrontServoPin, 50)
+    pwm_FrontServo.start(0)
+
     GPIO.setup(ServoUpDownPin, GPIO.OUT)
     GPIO.setup(ServoLeftRightPin, GPIO.OUT)
     GPIO.setup(buzzer, GPIO.OUT, initial=GPIO.HIGH)
@@ -187,8 +191,10 @@ def run():
     GPIO.output(IN3, GPIO.HIGH)
     GPIO.output(IN4, GPIO.LOW)
     # 启动PWM设置占空比为100（0--100）
-    pwm_ENA.start(100)
-    pwm_ENB.start(100)
+    # pwm_ENA.start(100)
+    # pwm_ENB.start(100)
+    pwm_ENA.ChangeDutyCycle(CarSpeedControl)
+    pwm_ENB.ChangeDutyCycle(CarSpeedControl)
 
 
 # 小车后退
@@ -261,16 +267,25 @@ def whistle():
 
 # 前舵机旋转到指定角度
 def frontservo_appointed_detection(pos):
-        pulsewidth = (pos * 11) + 500
-        GPIO.output(FrontServoPin, GPIO.HIGH)
-        time.sleep(pulsewidth / 1000000.0)
-        GPIO.output(FrontServoPin, GPIO.LOW)
-        time.sleep(20.0 / 1000 - pulsewidth / 1000000.0)
-    # pos = int(pos)
-    # for i in range(18):
-    #     pwm_FrontServo.start(2.5 + 10 * pos / 180)
-    #     time.sleep(0.02)  # 等待20ms周期结束
-    #     pwm_FrontServo.ChangeDutyCycle(0)  # 归零信号
+        # pulsewidth = (pos * 11) + 500
+        # GPIO.output(FrontServoPin, GPIO.HIGH)
+        # time.sleep(pulsewidth / 1000000.0)
+        # GPIO.output(FrontServoPin, GPIO.LOW)
+        # time.sleep(20.0 / 1000 - pulsewidth / 1000000.0)
+    pos = int(pos)
+    for i in range(18):
+        pwm_FrontServo.start(2.5 + 10 * pos / 180)
+        time.sleep(0.02)  # 等待20ms周期结束
+        # pwm_FrontServo.ChangeDutyCycle(0)  # 归零信号
+
+# 前舵机向左
+def front_servo_left():
+    frontservo_appointed_detection(180)
+
+
+# 前舵机向右
+def front_servo_right():
+    frontservo_appointed_detection(0)
 
     # 摄像头舵机左右旋转到指定角度
 def leftrightservo_appointed_detection(pos):
@@ -333,13 +348,13 @@ def do_service(connect_socket):
             with eventlet.Timeout(1, False):
                 spin_left()
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'y'):
-            frontservo_appointed_detection(1)
+            front_servo_left()
             GPIO.output(LED_R, GPIO.LOW)
             GPIO.output(LED_G, GPIO.LOW)
             GPIO.output(LED_B, GPIO.HIGH)
             whistle()
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'i'):
-            leftrightservo_appointed_detection(179)
+            front_servo_right()
             GPIO.output(LED_R, GPIO.HIGH)
             GPIO.output(LED_G, GPIO.LOW)
             GPIO.output(LED_B, GPIO.LOW)

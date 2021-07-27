@@ -166,9 +166,10 @@ def init():
     pwm_ENB.start(0)
     # 设置舵机的频率和起始占空比
     pwm_FrontServo = GPIO.PWM(FrontServoPin, 50)
+    pwm_FrontServo.start(0)
     pwm_UpDownServo = GPIO.PWM(ServoUpDownPin, 50)
     pwm_LeftRightServo = GPIO.PWM(ServoLeftRightPin, 50)
-    pwm_FrontServo.start(0)
+
     pwm_UpDownServo.start(0)
     pwm_LeftRightServo.start(0)
     pwm_rled = GPIO.PWM(LED_R, 1000)
