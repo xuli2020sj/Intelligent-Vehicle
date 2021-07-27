@@ -161,6 +161,10 @@ def init():
     GPIO.setup(ServoUpDownPin, GPIO.OUT)
     GPIO.setup(ServoLeftRightPin, GPIO.OUT)
 
+    GPIO.setup(LED_R, GPIO.OUT)
+    GPIO.setup(LED_G, GPIO.OUT)
+    GPIO.setup(LED_B, GPIO.OUT)
+
     # 设置pwm引脚和频率为2000hz
     pwm_ENA = GPIO.PWM(ENA, 2000)
     pwm_ENB = GPIO.PWM(ENB, 2000)
@@ -316,9 +320,15 @@ def do_service(connect_socket):
             with eventlet.Timeout(1, False):
                 spin_left()
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'y'):
-            frontservo_appointed_detection(120)
+            frontservo_appointed_detection(1)
+            GPIO.output(LED_R, GPIO.LOW)
+            GPIO.output(LED_G, GPIO.LOW)
+            GPIO.output(LED_B, GPIO.HIGH)
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'i'):
-            leftrightservo_appointed_detection(50)
+            leftrightservo_appointed_detection(180)
+            GPIO.output(LED_R, GPIO.HIGH)
+            GPIO.output(LED_G, GPIO.LOW)
+            GPIO.output(LED_B, GPIO.LOW)
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'o'):
             updownservo_appointed_detection(50)
         # # else:
