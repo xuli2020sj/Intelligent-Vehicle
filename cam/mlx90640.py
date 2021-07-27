@@ -21,6 +21,10 @@ mlx90640 = cdll.LoadLibrary('./libmlx90640.so')
 #         print("\r\n")
 #     print("%.2f " % (temp[i]), end='')
 
+import time
+from ctypes import *
+import numpy as np
+mlx90640 = cdll.LoadLibrary('./libmlx90640.so')
 
 def tcam():
     temp = (c_float * 768)()

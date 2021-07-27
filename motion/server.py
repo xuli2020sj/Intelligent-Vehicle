@@ -369,7 +369,7 @@ def main():
         connect_socket, client_addr = listen_socket.accept()  # accept默认会引起阻塞
         # 新创建连接用的socket, 客户端的地址
         # print(connect_socket)
-        print(client_addr)
+
 
         # 每当来新的客户端连接，创建子进程，由子进程和客户端通信
         process_do_service = Process(target=do_service, args=(connect_socket,))
