@@ -5,7 +5,7 @@ import time  # 导入time模块
 
 # server 接收端
 # 设置服务器默认端口号
-PORT = 8000
+PORT = 8001
 # 创建一个套接字socket对象，用于进行通讯
 # socket.AF_INET 指明使用INET地址集，进行网间通讯
 # socket.SOCK_DGRAM 指明使用数据协议，即使用传输层的udp协议

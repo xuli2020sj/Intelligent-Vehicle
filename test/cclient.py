@@ -4,7 +4,7 @@ import time
 
 # client 发送端
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-PORT = 8000
+PORT = 8001
 
 while True:
     start = time.time()  # 获取当前时间
