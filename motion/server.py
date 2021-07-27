@@ -324,8 +324,9 @@ def do_service(connect_socket):
             GPIO.output(LED_R, GPIO.LOW)
             GPIO.output(LED_G, GPIO.LOW)
             GPIO.output(LED_B, GPIO.HIGH)
+            whistle()
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'i'):
-            leftrightservo_appointed_detection(180)
+            leftrightservo_appointed_detection(179)
             GPIO.output(LED_R, GPIO.HIGH)
             GPIO.output(LED_G, GPIO.LOW)
             GPIO.output(LED_B, GPIO.LOW)
