@@ -29,5 +29,4 @@ while True:
         print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(now)))  # 以指定格式显示时间
         print("来自客户端%s,发送的%s\n" % (client, receive_data))  # 打印接收的内容
     except socket.timeout:  # 如果10秒钟没有接收数据进行提示（打印 "time out"）
-        print
-        "tme out"
+        print("tme out")
