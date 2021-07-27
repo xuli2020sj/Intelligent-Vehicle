@@ -41,7 +41,7 @@ def main():
     while True:
 
         send_data = str(float(tcam()))
-
+        print(send_data)
         if send_data == 'quit':
             break
         # 向服务器请求数据
