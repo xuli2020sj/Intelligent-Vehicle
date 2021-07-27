@@ -1,32 +1,47 @@
-# -*- coding: utf-8 -*-
 
-import socket  # 导入socket模块
-import time  # 导入time模块
+from multiprocessing import Process
+from socket import *
+def do_service(connect_socket):
+    while True:
+        recv_data = connect_socket.recv(1024)
+        if len(recv_data) == 0:
+            # 发送方关闭tcp的连接,recv()不会阻塞，而是直接返回''
+            # print('client %s close' % str(client_addr))
+            # s.getpeername()   s.getsockname()
+            # wiringpi.digitalWrite(0,0)
+            print('client %s close' % str(connect_socket.getpeername()))
+            break
 
-# server 接收端
-# 设置服务器默认端口号
-PORT = 8001
-# 创建一个套接字socket对象，用于进行通讯
-# socket.AF_INET 指明使用INET地址集，进行网间通讯
-# socket.SOCK_DGRAM 指明使用数据协议，即使用传输层的udp协议
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-address = ("192.168.146.1", PORT)
-server_socket.bind(address)  # 为服务器绑定一个固定的地址，ip和端口
-server_socket.settimeout(10000)  # 设置一个时间提示，如果10秒钟没接到数据进行提示
+        print('recv: %s' % recv_data.decode('gbk'))
+# 1.创建socket
+listen_socket = socket(AF_INET, SOCK_STREAM)
+# stream流式套接字,对应tcp
 
+# 设置允许复用地址,当建立连接之后服务器先关闭，设置地址复用
+# 设置socket层属性    复用地址，不用等2msl，    允许
+listen_socket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+
+# 2.绑定端口
+my_addr = ('192.168.146.1', 7777)
+listen_socket.bind(my_addr)
+
+# 3，接听状态
+listen_socket.listen(4)  # 设置套接字成监听,4表示一个己连接队列长度
+print('listening...')
+
+# 4.等待客户端来请求
+
+# 父进程只专注接受连接请求
 while True:
-    # 正常情况下接收数据并且显示，如果10秒钟没有接收数据进行提示（打印 "time out"）
-    # 当然可以不要这个提示，那样的话把"try:" 以及 "except"后的语句删掉就可以了
-    try:
-        now = time.time()  # 获取当前时间
+    # 接受连接请求，创建连接套接字，用于客户端间通信
+    connect_socket, client_addr = listen_socket.accept()  # accept默认会引起阻塞
+    # 新创建连接用的socket, 客户端的地址
+    # print(connect_socket)
+    print(client_addr)
 
-        # 接收客户端传来的数据 recvfrom接收客户端的数据，默认是阻塞的，直到有客户端传来数据
-        # recvfrom 参数的意义，表示最大能接收多少数据，单位是字节
-        # recvfrom返回值说明
-        # receive_data表示接受到的传来的数据,是bytes类型
-        # client  表示传来数据的客户端的身份信息，客户端的ip和端口，元组
-        receive_data, client = server_socket.recvfrom(1024)
-        print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(now)))  # 以指定格式显示时间
-        print("来自客户端%s,发送的%s\n" % (client, receive_data))  # 打印接收的内容
-    except socket.timeout:  # 如果10秒钟没有接收数据进行提示（打印 "time out"）
-        print("tme out")
+    # 每当来新的客户端连接，创建子进程，由子进程和客户端通信
+    process_do_service = Process(target=do_service, args=(connect_socket,))
+    process_do_service.start()
+
+    # 父进程，关闭connect_socket
+    connect_socket.close()
