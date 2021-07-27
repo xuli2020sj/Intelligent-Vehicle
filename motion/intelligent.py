@@ -7,7 +7,7 @@ Created on Sat Jul 10 21:52:21 2021
 
 from multiprocessing import Process
 from socket import *
-# import wiringpi 
+# import wiringpi
 
 import RPi.GPIO as GPIO
 import time
@@ -283,100 +283,55 @@ def servo_init():
         pwm_UpDownServo.ChangeDutyCycle(0)  # 归零信号
 
 
-################################################################ 需要为客户端提供服务
-def do_service(connect_socket):
-    while True:
-        recv_data = connect_socket.recv(1024)
-        if len(recv_data) == 0:
-            # 发送方关闭tcp的连接,recv()不会阻塞，而是直接返回''
-            # print('client %s close' % str(client_addr))     
-            # s.getpeername()   s.getsockname()
-            # wiringpi.digitalWrite(0,0)
-            print('client %s close' % str(connect_socket.getpeername()))
-            break
-
-        if (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'w'):
-            with eventlet.Timeout(1, False):
-                run()
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 's'):
-            with eventlet.Timeout(1, False):
-                back()
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'a'):
-            with eventlet.Timeout(1, False):
-                left()
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'd'):
-            with eventlet.Timeout(1, False):
-                right()
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'x'):
-            with eventlet.Timeout(1, False):
-                brake()
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'e'):
-            with eventlet.Timeout(1, False):
-                spin_right()
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'q'):
-            with eventlet.Timeout(1, False):
-                spin_left()
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'y'):
-            with eventlet.Timeout(1, False):
-                front_servo0()
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'u'):
-            with eventlet.Timeout(1, False):
-                front_servo45()
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'i'):
-            with eventlet.Timeout(1, False):
-                front_servo90()
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'o'):
-            with eventlet.Timeout(1, False):
-                front_servo135()
-        elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'p'):
-            with eventlet.Timeout(1, False):
-                front_servo180()
-        # # else:
-        # wiringpi.digitalWrite(0,0)
-        # if len(recv_data) > 1:
-        # wiringpi.digitalWrite(0,0)
-
-        print('recv: %s' % recv_data.decode('gbk'))
-
-
 def main():
     init()
     servo_init()
-    # 0.init wiringpi
-    # wiringpi.wiringPiSetup()
-    # wiringpi.pinMode(0,1)
-    # 1.创建socket
-    listen_socket = socket(AF_INET, SOCK_STREAM)
-    # stream流式套接字,对应tcp
+    taxishu=0.005
+    FindNum=0
+    global FindNum
 
-    # 设置允许复用地址,当建立连接之后服务器先关闭，设置地址复用
-    # 设置socket层属性    复用地址，不用等2msl，    允许
-    listen_socket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 
-    # 2.绑定端口
-    my_addr = ('192.168.146.107', 8888)
-    listen_socket.bind(my_addr)
+    while FindNum==0:
+        distance=[]
+        temperature=[]
+        angle=[]
+        for i in range(7):
+            frontservo_appointed_detection(i*30)
+            time.sleep(0.8)
+            distance.append(Distance_test())
+            temperature.append(hongwai_temp())
+            angle.append(hongwai_angle())
+            # %正前方为0,右侧为负数,左为正
 
-    # 3，接听状态
-    listen_socket.listen(4)  # 设置套接字成监听,4表示一个己连接队列长度
-    print('listening...')
+        index=temperature.index(max(temperature))
+        target_angle=angle(index)+index*30
 
-    # 4.等待客户端来请求
+        if temperature(index)>120:
+            FindNum = FindNum+1
+            break
 
-    # 父进程只专注接受连接请求
-    while True:
-        # 接受连接请求，创建连接套接字，用于客户端间通信
-        connect_socket, client_addr = listen_socket.accept()  # accept默认会引起阻塞
-        # 新创建连接用的socket, 客户端的地址
-        # print(connect_socket)
-        print(client_addr)
+        if target_angle<=90 :
+            needtime=(90-target_angle)*taxishu
+            spin_right()
+            time.sleep(needtime)
+            brake()
+        elif target_angle>90:
+            needtime=(target_angle-90)*taxishu
+            spin_left()
+            time.sleep(needtime)
+            brake()
 
-        # 每当来新的客户端连接，创建子进程，由子进程和客户端通信
-        process_do_service = Process(target=do_service, args=(connect_socket,))
-        process_do_service.start()
+        if distance(index)>30
+            run()
+            time.sleep(2)
+            brake()
+        elif distance(index)<30 and distance(index)>20
+            run()
+            time.sleep(1)
+            brake()
 
-        # 父进程，关闭connect_socket
-        connect_socket.close()
+
+
 
 
 if __name__ == "__main__":

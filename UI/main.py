@@ -35,6 +35,7 @@ CarSpeedControl = 1000
 # 加载qt文件
 Ui_MainWindow = loadUiType("main.ui")[0]
 
+
 class MainWindow(QMainWindow, Ui_MainWindow):
     motionSin = pyqtSignal(str)
 
@@ -85,7 +86,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.stop.clicked.connect(self.stopText)
         # 车辆返航
         #        self.return_to_base.clicked(self.appendText3)
-
 
         # 绑定快捷键
         self.upbtn.setShortcut('w')
@@ -160,6 +160,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def TcpStart(self):
         self.tcpthread.start()
         pass
+
     # 状态信息显示
     def appendText(self):
         self.textBrowser.append("自动寻源已启动")
@@ -240,7 +241,6 @@ class CamThread(QThread):  # 建立一个任务线程类
                 break
         server.close()
         cv2.destroyAllWindows()
-
 
 
 class thermalCamThread(QThread):  # 建立一个任务线程类
