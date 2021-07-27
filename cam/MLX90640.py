@@ -316,4 +316,4 @@ class MLX90640:
 
 if __name__ == '__main__':
 	sensor = MLX90640()  # can optionally include address as argument, default is 0x33
-	sensor.getCompensatedPixData(1, 1)  # gets compensated temperature data from chosen pixel from 32x24
+	print(sensor.getCompensatedPixData(5, 5))  # gets compensated temperature data from chosen pixel from 32x24
