@@ -123,8 +123,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # self.label_show_camera = QtWidgets.QLabel()  # 定义显示视频的Label
         # self.label_show_camera.setFixedSize(641, 481)  # 给显示视频的Label设置大小为641x481
 
-        self.camthread = CamThread()  # 实例化任务线程类
-        self.connect.clicked.connect(self.camStart)
+        # self.camthread = CamThread()  # 实例化任务线程类
+        # self.connect.clicked.connect(self.camStart)
 
         self.tcpthread = TcpThread()  # 实例化任务线程类
         self.connect.clicked.connect(self.TcpStart)
@@ -133,13 +133,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.connect.clicked.connect(self.TcaStart)
 
         time = QTimer(self)
-        time.setInterval(500)
+        time.setInterval(5000)
         time.timeout.connect(self.refresh)
         time.start()
         self.tlcd.display(25)
 
         self.jdlcd.display(121.447477)
         self.wdlcd.display(31.025758)
+
+        # 启动摄像头
+    def camStart(self):
+        self.camthread.start()
+
+    # 启动TCP
+    def TcpStart(self):
+        self.tcpthread.start()
+
+    def TcaStart(self):
+        self.tcamthread.start()
 
     def refresh(self):
         self.ttlcd.display(temperature)
@@ -172,16 +183,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # print(text)
         self.tcpthread.setMesg(text)
 
-    # 启动摄像头
-    def camStart(self):
-        self.camthread.start()
 
-    # 启动TCP
-    def TcpStart(self):
-        self.tcpthread.start()
-
-    def TcaStart(self):
-        self.tcamthread.start()
 
     # 状态信息显示
     def startText(self):
@@ -211,21 +213,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def leftText(self):
         self.textBrowser.append("小车左转")
-
-    # @pyqtSlot(np.ndarray)
-    # def update_image(self, cv_img):
-    #     """Updates the image_label with a new opencv image"""
-    #     qt_img = self.convert_cv_qt(cv_img)
-    #     self.image_label.setPixmap(qt_img)
-    #
-    # def convert_cv_qt(self, cv_img):
-    #     """Convert from an opencv image to QPixmap"""
-    #     rgb_image = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)
-    #     h, w, ch = rgb_image.shape
-    #     bytes_per_line = ch * w
-    #     convert_to_Qt_format = QtGui.QImage(rgb_image.data, w, h, bytes_per_line, QtGui.QImage.Format_RGB888)
-    #     p = convert_to_Qt_format.scaled(self.disply_width, self.display_height, Qt.KeepAspectRatio)
-    #     return QPixmap.fromImage(p)
 
 
 class CamThread(QThread):  # 建立一个任务线程类
@@ -280,12 +267,13 @@ class thermalCamThread(QThread):  # 建立一个任务线程类
         # 套接字接口
         mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # 设置IP和端口
+
         host = '192.168.146.1'
-        port = 4444
+        port = 4445
         # bind绑定该端口
         mySocket.bind((host, port))
         mySocket.listen(10)
-
+        print("fuck")
         while True:
             # 接收客户端连接
             print("等待连接....")
@@ -309,7 +297,7 @@ class thermalCamThread(QThread):  # 建立一个任务线程类
                     # 关闭数据库连接
 
                     print("程序结束\n")
-                    # exit()
+                    exit()
 
 
 
