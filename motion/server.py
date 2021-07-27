@@ -256,11 +256,16 @@ def whistle():
 
 # 前舵机旋转到指定角度
 def frontservo_appointed_detection(pos):
+        pulsewidth = (pos * 11) + 500
+        GPIO.output(FrontServoPin, GPIO.HIGH)
+        time.sleep(pulsewidth / 1000000.0)
+        GPIO.output(FrontServoPin, GPIO.LOW)
+        time.sleep(20.0 / 1000 - pulsewidth / 1000000.0)
     # pos = int(pos)
     # for i in range(18):
     #     pwm_FrontServo.start(2.5 + 10 * pos / 180)
     #     time.sleep(0.02)  # 等待20ms周期结束
-    pwm_FrontServo.ChangeDutyCycle(0)  # 归零信号
+    #     pwm_FrontServo.ChangeDutyCycle(0)  # 归零信号
 
     # 摄像头舵机左右旋转到指定角度
 def leftrightservo_appointed_detection(pos):
@@ -311,7 +316,7 @@ def do_service(connect_socket):
             with eventlet.Timeout(1, False):
                 spin_left()
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'y'):
-            frontservo_appointed_detection(100)
+            frontservo_appointed_detection(120)
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'i'):
             leftrightservo_appointed_detection(50)
         elif (len(recv_data) == 1) and (recv_data.decode('gbk')[0] == 'o'):
