@@ -32,7 +32,6 @@ def tcam():
 
     # print(np.max(t))
     # print(np.argmax(t))
-    time.sleep(1/2)
     return np.max(t), np.argmax(t) % 32
 
 if __name__ == '__main__':
