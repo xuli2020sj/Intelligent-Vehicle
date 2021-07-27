@@ -64,7 +64,7 @@ ReturnTemp = ''
 g_CarState = 0
 g_ServoState = 0
 # 小车速度变量
-CarSpeedControl = 2000
+CarSpeedControl = 100
 # 寻迹，避障，寻光变量
 infrared_track_value = ''
 infrared_avoid_value = ''
