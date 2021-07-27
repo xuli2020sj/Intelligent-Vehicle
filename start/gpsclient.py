@@ -40,7 +40,7 @@ def main():
 
     while True:
 
-        send_data = str(float(tcam()))
+        send_data = str(int(tcam()))
         print(send_data)
         if send_data == 'quit':
             break
