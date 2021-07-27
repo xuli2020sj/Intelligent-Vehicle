@@ -160,6 +160,7 @@ def init():
     GPIO.setup(FrontServoPin, GPIO.OUT)
     GPIO.setup(ServoUpDownPin, GPIO.OUT)
     GPIO.setup(ServoLeftRightPin, GPIO.OUT)
+    GPIO.setup(buzzer, GPIO.OUT, initial=GPIO.HIGH)
 
     GPIO.setup(LED_R, GPIO.OUT)
     GPIO.setup(LED_G, GPIO.OUT)

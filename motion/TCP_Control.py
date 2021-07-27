@@ -730,7 +730,8 @@ try:
                     break
                 if connectflag:
                     # 采集数据给客户端
-                    tcpclientsock.send(sendbuf)
+                    # tcpclientsock.send(sendbuf)
+                    pass
                 timecount = 1000
                 count = 50
         ServorThread()
