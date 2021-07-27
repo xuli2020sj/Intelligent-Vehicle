@@ -11,6 +11,8 @@ ptemp = pointer(temp)
 mlx90640.get_mlx90640_temp(ptemp)
 my_nparray = np.frombuffer(temp, dtype=np.float32)
 print(my_nparray)
+print(my_nparray.shape)
+print(my_nparray.max)
 # for i in range(len(temp)):
 #     if i % 32 == 0 and i != 0:
 #         print("\r\n")
