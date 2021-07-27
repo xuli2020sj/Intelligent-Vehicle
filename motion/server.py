@@ -15,42 +15,6 @@ import string
 import threading
 import timeout_decorator
 
-# 按键值定义
-run_car = '1'  # 按键前
-back_car = '2'  # 按键后
-left_car = '3'  # 按键左
-right_car = '4'  # 按键右
-stop_car = '0'  # 按键停
-
-# 舵机按键值定义
-front_left_servo = '1'  # 前舵机向左
-front_right_servo = '2'  # 前舵机向右
-up_servo = '3'  # 摄像头舵机向上
-down_servo = '4'  # 摄像头舵机向下
-left_servo = '6'  # 摄像头舵机向左
-right_servo = '7'  # 摄像头舵机向右
-updowninit_servo = '5'  # 摄像头舵机上下复位
-stop_servo = '8'  # 舵机停止
-
-# 小车状态值定义
-enSTOP = 0
-enRUN = 1
-enBACK = 2
-enLEFT = 3
-enRIGHT = 4
-enTLEFT = 5
-enTRIGHT = 6
-
-# 小车舵机定义
-enFRONTSERVOLEFT = 1
-enFRONTSERVORIGHT = 2
-enSERVOUP = 3
-enSERVODOWN = 4
-enSERVOUPDOWNINIT = 5
-enSERVOLEFT = 6
-enSERVORIGHT = 7
-enSERVOSTOP = 8
-
 # 初始化上下左右角度为90度
 ServoLeftRightPos = 90
 ServoUpDownPos = 90
@@ -64,9 +28,6 @@ IN3 = 19
 IN4 = 26
 ENA = 16
 ENB = 13
-
-# 小车按键定义
-key = 8
 
 # 超声波引脚定义
 EchoPin = 0
@@ -89,21 +50,6 @@ AvoidSensorRight = 17
 # 蜂鸣器引脚定义
 buzzer = 8
 
-# 灭火电机引脚设置
-OutfirePin = 2
-
-# 循迹红外引脚定义
-# TrackSensorLeftPin1 TrackSensorLeftPin2 TrackSensorRightPin1 TrackSensorRightPin2
-#      3                 5                  4                   18
-TrackSensorLeftPin1 = 3  # 定义左边第一个循迹红外传感器引脚为3口
-TrackSensorLeftPin2 = 5  # 定义左边第二个循迹红外传感器引脚为5口
-TrackSensorRightPin1 = 4  # 定义右边第一个循迹红外传感器引脚为4口
-TrackSensorRightPin2 = 18  # 定义右边第二个循迹红外传感器引脚为18口
-
-# 光敏电阻引脚定义
-LdrSensorLeft = 7
-LdrSensorRight = 6
-
 # 变量的定义
 # 七彩灯RGB三色变量定义
 red = 0
@@ -118,7 +64,7 @@ ReturnTemp = ''
 g_CarState = 0
 g_ServoState = 0
 # 小车速度变量
-CarSpeedControl = 30
+CarSpeedControl = 2000
 # 寻迹，避障，寻光变量
 infrared_track_value = ''
 infrared_avoid_value = ''
@@ -131,7 +77,6 @@ GPIO.setmode(GPIO.BCM)
 # 忽略警告信息
 GPIO.setwarnings(False)
 
-import requests
 import eventlet
 import time
 
@@ -197,7 +142,7 @@ def init():
     GPIO.setup(IN3, GPIO.OUT, initial=GPIO.LOW)
     GPIO.setup(IN4, GPIO.OUT, initial=GPIO.LOW)
     GPIO.setup(buzzer, GPIO.OUT, initial=GPIO.HIGH)
-    GPIO.setup(OutfirePin, GPIO.OUT)
+
     GPIO.setup(EchoPin, GPIO.IN)
     GPIO.setup(TrigPin, GPIO.OUT)
     GPIO.setup(LED_R, GPIO.OUT)
@@ -208,12 +153,6 @@ def init():
     GPIO.setup(ServoLeftRightPin, GPIO.OUT)
     GPIO.setup(AvoidSensorLeft, GPIO.IN)
     GPIO.setup(AvoidSensorRight, GPIO.IN)
-    GPIO.setup(LdrSensorLeft, GPIO.IN)
-    GPIO.setup(LdrSensorRight, GPIO.IN)
-    GPIO.setup(TrackSensorLeftPin1, GPIO.IN)
-    GPIO.setup(TrackSensorLeftPin2, GPIO.IN)
-    GPIO.setup(TrackSensorRightPin1, GPIO.IN)
-    GPIO.setup(TrackSensorRightPin2, GPIO.IN)
     # 设置pwm引脚和频率为2000hz
     pwm_ENA = GPIO.PWM(ENA, 2000)
     pwm_ENB = GPIO.PWM(ENB, 2000)
@@ -255,8 +194,6 @@ def back():
     GPIO.output(IN4, GPIO.HIGH)
     pwm_ENA.ChangeDutyCycle(CarSpeedControl)
     pwm_ENB.ChangeDutyCycle(CarSpeedControl)
-    time.sleep(1)
-    brake()
 
 
 # 小车左转
