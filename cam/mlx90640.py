@@ -15,7 +15,7 @@ while True:
     t = my_nparray.reshape((32, 24))
 
     print(t.max)
-    print(t.index(max(t)))
+    print(np.argmax(t))
     time.sleep(1/2)
 # for i in range(len(temp)):
 #     if i % 32 == 0 and i != 0:
