@@ -40,8 +40,9 @@ def main():
 
     while True:
 
-        send_data = str(int(tcam()))
-        print(send_data)
+        # send_data = str(int(tcam()))
+        # print(send_data)
+        send_data = "fuck"
         if send_data == 'quit':
             break
         # 向服务器请求数据
