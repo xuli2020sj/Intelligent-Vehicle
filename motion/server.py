@@ -121,12 +121,7 @@ def init():
     # pwm_ENA.start(0)
     # pwm_ENB.start(0)
 
-    pwm_FrontServo = GPIO.PWM(FrontServoPin, 50)
-    pwm_UpDownServo = GPIO.PWM(ServoUpDownPin, 50)
-    pwm_LeftRightServo = GPIO.PWM(ServoLeftRightPin, 50)
-    pwm_FrontServo.start(0)
-    pwm_UpDownServo.start(0)
-    pwm_LeftRightServo.start(0)
+
     # global pwm_ENA
     # global pwm_ENB
     # global pwm_FrontServo
