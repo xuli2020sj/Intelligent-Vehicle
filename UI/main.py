@@ -80,10 +80,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         layout = QVBoxLayout()
         self.setLayout(layout)
         self.gridLayout_2.addWidget(self.browser)
-        # 启动寻源
-        self.start.clicked.connect(self.appendText)
-        # 停止寻源
-        self.stop.clicked.connect(self.stopText)
+
         # 车辆返航
         #        self.return_to_base.clicked(self.appendText3)
 
@@ -115,6 +112,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.stop.setShortcut('x')
         self.stop.clicked.connect(self.stopText)
         self.stop.clicked.connect(self.stopc)
+
+        self.stat.setShortcut('n')
+        self.stat.clicked.connect(self.statText)
+        self.stat.clicked.connect(self.statc)
 
         self.motionSin.connect(self.ccmd)
 
@@ -148,8 +149,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def stopc(self):
         self.motionSin.emit("x")
 
+    def startc(self):
+        self.motionSin.emit("n")
+
     def ccmd(self, text):
-        print(text)
+        # print(text)
         self.tcpthread.setMesg(text)
 
     # 启动摄像头
@@ -162,7 +166,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         pass
 
     # 状态信息显示
-    def appendText(self):
+    def startText(self):
         self.textBrowser.append("自动寻源已启动")
 
     def stopText(self):
