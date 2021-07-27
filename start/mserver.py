@@ -376,7 +376,7 @@ def servo_init():
 
 
 def auto():
-    init()
+    # init()
     #  servo_init()
     taxishu = 0.008
     FindNum = 0
