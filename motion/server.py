@@ -206,16 +206,16 @@ def whistle():
 
 # 前舵机旋转到指定角度
 def frontservo_appointed_detection(pos):
-        # pulsewidth = (pos * 11) + 500
-        # GPIO.output(FrontServoPin, GPIO.HIGH)
-        # time.sleep(pulsewidth / 1000000.0)
-        # GPIO.output(FrontServoPin, GPIO.LOW)
-        # time.sleep(20.0 / 1000 - pulsewidth / 1000000.0)
+    pulsewidth = (pos * 11) + 500
+    GPIO.output(FrontServoPin, GPIO.HIGH)
+    time.sleep(pulsewidth / 1000000.0)
+    GPIO.output(FrontServoPin, GPIO.LOW)
+    time.sleep(20.0 / 1000 - pulsewidth / 1000000.0)
     pos = int(pos)
-    for i in range(18):
-        pwm_FrontServo.start(2.5 + 10 * pos / 180)
-        time.sleep(0.02)  # 等待20ms周期结束
-        # pwm_FrontServo.ChangeDutyCycle(0)  # 归零信号
+    # for i in range(18):
+    #     pwm_FrontServo.start(2.5 + 10 * pos / 180)
+    #     time.sleep(0.02)  # 等待20ms周期结束
+    #     # pwm_FrontServo.ChangeDutyCycle(0)  # 归零信号
 
 # 前舵机向左
 def front_servo_left():
