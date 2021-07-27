@@ -305,6 +305,7 @@ class TcpThread(QThread):  # 建立一个任务线程类
 
         print('connect %s success' % str(server_addr))
 
+        mesg2 = self.mesg
         while True:
             # # 3.给用户提示，让用户输入要检索的资料
             # send_data = input('>>')
@@ -313,8 +314,10 @@ class TcpThread(QThread):  # 建立一个任务线程类
                 break
             # # 向服务器请求数据
             # client_socket.send(send_data.encode())
-            client_socket.send(self.mesg.encode())
-            time.sleep(0.1)
+            if self.mesg != mesg2 :
+                client_socket.send(self.mesg.encode())
+                time.sleep(0.1)
+                mesg2=self.mesg
 
         client_socket.close()
 
