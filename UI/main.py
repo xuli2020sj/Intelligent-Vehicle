@@ -223,7 +223,7 @@ class CamThread(QThread):  # 建立一个任务线程类
 
 
     def run(self):  # 在启动线程后任务从这个函数里面开始执行
-        HOST = '192.168.146.1'
+        HOST = '192.168.233.1'
         PORT = 9999
         buffSize = 65535
 
@@ -268,7 +268,7 @@ class thermalCamThread(QThread):  # 建立一个任务线程类
         mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # 设置IP和端口
 
-        host = '192.168.146.1'
+        host = '192.168.233.1'
         port = 4445
         # bind绑定该端口
         mySocket.bind((host, port))
@@ -317,7 +317,7 @@ class TcpThread(QThread):  # 建立一个任务线程类
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         # 2.指定服务器的地址和端口号
-        server_addr = ('192.168.146.205', 8888)
+        server_addr = ('192.168.233.121', 8888)
         client_socket.connect(server_addr)
 
         print('connect %s success' % str(server_addr))
