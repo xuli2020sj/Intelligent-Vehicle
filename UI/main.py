@@ -268,7 +268,7 @@ class thermalCamThread(QThread):  # 建立一个任务线程类
         mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # 设置IP和端口
 
-        host = '192.168.3.13'
+        host = '192.168.3.8'
         port = 4445
         # bind绑定该端口
         mySocket.bind((host, port))
@@ -317,7 +317,7 @@ class TcpThread(QThread):  # 建立一个任务线程类
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         # 2.指定服务器的地址和端口号
-        server_addr = ('192.168.3.8', 8888)
+        server_addr = ('192.168.3.14', 8888)
         client_socket.connect(server_addr)
 
         print('connect %s success' % str(server_addr))
