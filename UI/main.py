@@ -223,7 +223,7 @@ class CamThread(QThread):  # 建立一个任务线程类
 
 
     def run(self):  # 在启动线程后任务从这个函数里面开始执行
-        HOST = '192.168.3.13'
+        HOST = '192.168.3.8'
         PORT = 9999
         buffSize = 65535
 

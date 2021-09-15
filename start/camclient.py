@@ -4,7 +4,7 @@ import socket
 import struct
 #dannaoip
 
-HOST='192.168.233.1'
+HOST='192.168.3.8'
 PORT=9999
 
 server=socket.socket(socket.AF_INET,socket.SOCK_DGRAM) #socket对象

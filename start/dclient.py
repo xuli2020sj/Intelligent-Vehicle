@@ -36,7 +36,7 @@ def main():
     # 套接字接口
     mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # 设置ip和端口
-    host = '192.168.233.1'
+    host = '192.168.3.8'
     port = 4445
 
     try:
