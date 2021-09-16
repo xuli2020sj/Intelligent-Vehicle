@@ -562,7 +562,7 @@ def main():
     listen_socket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 
     # 2.绑定端口
-    my_addr = ('192.168.150.199', 8888) #che
+    my_addr = ('192.168.183.171', 8888) #che
     listen_socket.bind(my_addr)
 
     # 3，接听状态
